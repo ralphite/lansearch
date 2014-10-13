@@ -19,59 +19,20 @@ def index():
 
 @app.route('/search')
 def search():
-    test_results = [Result('link1', 'this is a file', 'hello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the details'
-                                                      ' of the filehello this is the details of the f'
-                                                      'ilehello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the d'
-                                                      'etails of the filehello this is the details o'
-                                                      'f the file'),
-                    Result('link1', 'this is a file', 'hello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the details'
-                                                      ' of the filehello this is the details of the f'
-                                                      'ilehello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the d'
-                                                      'etails of the filehello this is the details o'
-                                                      'f the file'),
-                    Result('link1', 'this is a file', 'hello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the details'
-                                                      ' of the filehello this is the details of the f'
-                                                      'ilehello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the d'
-                                                      'etails of the filehello this is the details o'
-                                                      'f the file'),
-                    Result('link1', 'this is a file', 'hello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the details'
-                                                      ' of the filehello this is the details of the f'
-                                                      'ilehello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the d'
-                                                      'etails of the filehello this is the details o'
-                                                      'f the file'),
-                    Result('link1', 'this is a file', 'hello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the details'
-                                                      ' of the filehello this is the details of the f'
-                                                      'ilehello this is the details of the filehello '
-                                                      'this is the details of the filehello this is '
-                                                      'the details of the filehello this is the d'
-                                                      'etails of the filehello this is the details o'
-                                                      'f the file'),
-                    Result('link1', 'this is a file', 'hello this is the details of the file')]
+    results = [Result('link1', 'this is a file', '''
+        this is the detailed info of the search result.this is the detailed info of the search result.
+        this is the detailed info of the search result.this is the detailed info of the search result.
+        this is the detailed info of the search result.this is the detailed info of the search result.
+        this is the detailed info of the search result.this is the detailed info of the search result.
+    ''')]
+    results *= 6
 
-    query_text = 'aaa'
+    query_text = 'bbb'
     query_time = 0.032
     total_result_count = 132
     current_page = 2
     pages = [1, 2, 3, '..', 9]
-    return render_template('search.html', results=test_results,
+    return render_template('search.html', results=results,
                            total_result_count=total_result_count,
                            query_text=query_text, query_time=query_time,
                            pages=pages, current_page=current_page)
