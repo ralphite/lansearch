@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id='content'>
+    <div class='container' id='results'>
+        <form action='/search' method='get'>
+            <input class='searchbox' name='q' type='text' value='{{ query_text }}'>
+            <input class='searchbutton' type='submit' value='Search'>
+        </form>
+        <div id='stats'>
+            Found {{ total_result_count }} results in {{ query_time }} seconds
+        </div>
+        <div id='links'>
+            {% for result in results %}
+            <article>
+                <header class='ellipsis'>
+                    <a href='{{ result.link }}' target='_blank'>
+                        {{ result.name }}
+                    </a>
+                </header>
+                <section>
+                    <!-- need js code to process result.details with <span class="match"></span> -->
+                    <p> {{ result.details }} </p>
+                </section>
+            </article>
+            {% endfor %}
+        </div>
+        <div id='paginate'>
+            {% for page in pages %}
+            <span>
+                {% if page == current_page or page == '..' %}
+                    {{ page }}
+                {% else %}
+                    <a href="/search?q={{ query_text }}&amp;p={{ page }}">
+                        {{ page }}
+                    </a>
+                {% endif %}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

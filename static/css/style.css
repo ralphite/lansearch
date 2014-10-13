@@ -1,0 +1,369 @@
+/* global */
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333333;
+    font-size: 14px;
+    background: none repeat scroll 0 0 white;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Open Sans';
+}
+
+/* layout */
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 940px;
+    clear: both;
+}
+
+#header {
+    background-color: #2D3538;
+}
+
+#homepage {
+    text-align: center;
+    padding: 100px 0;
+}
+
+#footer {
+    text-align: center;
+    padding: 10px 0 5px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#search {
+    text-align: center;
+    padding: 50px 0;
+    min-height: 470px;
+}
+
+#results {
+    padding-top: 25px;
+    padding-bottom: 30px;
+    min-height: 515px;
+}
+
+#terms, #privacy {
+    padding: 40px 60px 40px 10px;
+}
+
+#error {
+    padding: 100px 50px;
+    min-height: 370px;
+    color: #333333;
+}
+
+/* styles */
+.logo, .logo a {
+    font-size: 22px;
+    color: #FFFFFF;
+    text-decoration: none;
+    display: inline;
+    font-family: 'Open Sans';
+    line-height: 2;
+}
+
+#header .nav {
+    float: right;
+    margin-top: 15px;
+}
+
+.nav li {
+    display: inline-block;
+    list-style-type: none;
+}
+
+#header .button {
+    background: none repeat scroll 0 0 #455357;
+    white-space: nowrap;
+    color: #FFFFFF;
+    border-radius: 3px 3px 3px 3px;
+    transition: background-color 0.15s ease-in-out 0s;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: 0 1px 2 rgba(0, 0, 0, 0.15);
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: bold;
+    border: medium none;
+}
+
+#header .button:hover {
+    background: none repeat scroll 0 0 #4E5E62;
+}
+
+#footer .nav li {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#footer .nav a {
+    text-decoration: none;
+    color: #777777;
+}
+
+#footer .nav a:hover {
+    color: #2D3538;
+    text-decoration: underline;
+}
+
+#homepage h1 {
+    color: #444444;
+    letter-spacing: 1px;
+    font-size: 46px;
+    font-family: 'Open Sans', sans-serif;
+    padding: 20px 0;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#homepage p {
+    color: #555555;
+    letter-spacing: 1px;
+    font-size: 22px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.connect_button {
+    display: inline-block;
+    margin-top: 40px;
+    background-color: #60B044;
+    background-image: linear-gradient(#8ADD6D, #60B044);
+    background-repeat: repeat-x;
+    text-decoration: none;
+    border: 0 none;
+    padding: 11px 20px;
+    border-radius: 20px 20px 20px 20px;
+    font-size: 18px;
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    text-align: center;
+    outline: medium none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.connect_button:hover {
+    background-color: #569E3D;
+    background-image: linear-gradient(#79D858, #569E3D);
+    background-repeat: repeat-x;
+    border-color: #4A993E;
+}
+
+.connect_button:focus {
+    border-color: #FFFFFF;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.searchbox {
+    outline: medium none;
+    border: 1px solid #777777;
+    font-size: 16px;
+    padding: 5px 10px;
+    margin: 0 10px;
+}
+
+.searchbox:focus {
+    border: 1px solid green;
+}
+
+.searchbutton {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333333;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 2px 2px 2px 2px;
+    cursor: pointer;
+    text-align: center;
+    padding: 7px;
+    background-color: #F5F5F5;
+    background-image: linear-gradient(#F5F5F5, #F1F1F1);
+}
+
+.searchbutton:hover {
+    background-color: #F8F8F8;
+    background-image: linear-gradient(#F8F8F8, #F1F1F1);
+    border-color: #C6C6C6;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+#user_session {
+    float: right;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    color: #FFFFFF;
+    font-size: 16px;
+    padding: 14px;
+}
+
+#user_session:hover, #user_session.active {
+    background: none repeat scroll 0 0 #4E5E62;
+}
+
+#user_session .name {
+    cursor: pointer;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+#user_session .dropdown {
+    background: none repeat scroll 0 0 #4E5E62;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    clear: both;
+    max-height: 350px;
+    min-width: 120px;
+    position: absolute;
+    right: 0;
+    top: -999px;
+    z-index: 0;
+    text-align: center;
+}
+
+#user_session .dropdown.show {
+    top: 44px;
+}
+
+#user_session ul {
+    float: left;
+    list-style-type: none;
+    width: 100%;
+}
+
+#user_session ul a, #user_session ul a:visited, #user_session ul a:active {
+    color: white;
+    display: block;
+    padding: 7px 16px;
+    outline: 0 none;
+    text-decoration: none;
+}
+
+#user_session ul a:hover {
+    text-decoration: underline;
+    background: none repeat scroll 0 0 rgba(255, 255, 255,0.1);
+}
+
+#results .searchbox {
+    width: 400px;
+}
+
+#stats {
+    color: #777777;
+    padding: 20px;
+}
+
+#links {
+    padding-left: 20px;
+    width: 80%;
+}
+
+#links article {
+    padding-bottom: 30px;
+}
+
+#links a {
+    color: #688b2d;
+    font-size: 16px;
+    line-height: 1.3em;
+}
+
+#links a:hover {
+    color: #7EAA37;
+}
+
+#links section {
+    line-height: 1.3em;
+}
+
+#paginate {
+    text-align: center;
+}
+
+#paginate a {
+    color: #688b2d;
+    font-size: 16px;
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+
+.match {
+    font-weight: bold;
+}
+
+#terms h1, #privacy h1 {
+    font-size: 36px;
+    line-height: 1.3em;
+}
+
+#terms h3, #privacy h3 {
+    font-size: 24px;
+    line-height: 1.3em;
+    padding: 10px 0;
+}
+
+#terms p, #privacy p, #privacy li {
+    font-size: 16px;
+    line-height: 1.3em;
+    padding: 10px 0;
+}
+
+#privacy li {
+    padding-left: 10px;
+}
+
+#privacy ul {
+    padding-left: 20px;
+}
+
+#error h1 {
+    font-size: 72px;
+    line-height: 1.5em;
+    padding-bottom: 50px;
+}
+
+#error p {
+    font-size: 48px;
+    padding-left: 15px;
+}
+
+#search form {
+    padding: 20px;
+    margin-top: 30px;
+}
+
+#search .searchbox {
+    width: 400px;
+}
+
+.notice {
+    padding: 10px 20px;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 1.3em;
+    background-color: rgba(240, 240, 240, 0.4);
+    background-color: #eeeeee);
+    border-radius: 5px 5px 5px 5px;
+    color: #555555;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+}
