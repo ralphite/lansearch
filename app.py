@@ -1,8 +1,10 @@
 __author__ = 'Ralph'
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from elasticsearch import Elasticsearch
 
 app = Flask(__name__)
+es = Elasticsearch()
 
 
 class Result:
@@ -19,18 +21,26 @@ def index():
 
 @app.route('/search')
 def search():
-    results = [Result('link1', 'this is a file', '''
-        this is the detailed info of the search result.this is the detailed info of the search result.
-        this is the detailed info of the search result.this is the detailed info of the search result.
-        this is the detailed info of the search result.this is the detailed info of the search result.
-        this is the detailed info of the search result.this is the detailed info of the search result.
-    ''')]
-    results *= 6
+    query_text = request.args.get('q', '', type=str)
+    offset = request.args.get('p', 1, type=int)
+    res = es.search(index="file-index", doc_type='file',
+                    body={
+                        "size": 10,
+                        "from": (offset - 1 or 0) * 10,
+                        "query": {
+                            "match": {
+                                "_all": query_text
+                            }
+                        }
+                    })
+    results = []
+    for hit in res['hits']['hits']:
+        r = Result(hit['_source']['path'] + '/' + hit['_source']['name'], hit['_source']['name'], hit['_source'])
+        results.append(r)
 
-    query_text = 'bbb'
     query_time = 0.032
-    total_result_count = 132
-    current_page = 2
+    total_result_count = len(results)
+    current_page = offset
     pages = [1, 2, 3, '..', 9]
     return render_template('search.html', results=results,
                            total_result_count=total_result_count,
