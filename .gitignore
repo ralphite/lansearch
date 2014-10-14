@@ -1,2 +1,4 @@
 .idea/
 venv/
+scripts/*.txt
+scripts/*.csv
