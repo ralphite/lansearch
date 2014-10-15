@@ -2,38 +2,39 @@
 
 {% block content %}
 <div id='content'>
-    <div class='container' id='results'>
-        <form action='/search' method='get'>
-            <input class='searchbox' name='q' type='text' value='{{ query_text }}'>
-            <input class='searchbutton' type='submit' value='Search'>
-        </form>
+    <div id='results'>
         <div id='stats'>
             Found {{ total_result_count }} results in {{ query_time }} seconds
         </div>
-        <div id='links'>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Machine</th>
+                <th>Path</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Mtime</th>
+            </tr>
+            </thead>
             {% for result in results %}
-            <article>
-                <header class='ellipsis'>
-                    <a href='{{ result.link }}' target='_blank'>
-                        {{ result.name }}
-                    </a>
-                </header>
-                <section>
-                    <!-- need js code to process result.details with <span class="match"></span> -->
-                    <p> {{ result.details }} </p>
-                </section>
-            </article>
+            <tbody>
+            <tr>
+                <td>{{ result.machine }}</td>
+                <td>{{ result.path }}</td>
+                <td><a href='{{ result.link }}' target='_blank'>{{ result.name }}</a></td>
+                <td>{{ result.size }}</td>
+                <td>{{ result.mtime }}</td>
+            </tr>
+            </tbody>
             {% endfor %}
-        </div>
+        </table>
         <div id='paginate'>
             {% for page in pages %}
             <span>
                 {% if page == current_page or page == '..' %}
-                    {{ page }}
+                {{ page }}
                 {% else %}
-                    <a href="/search?q={{ query_text }}&amp;p={{ page }}">
-                        {{ page }}
-                    </a>
+                <a href="/search?q={{ query_text }}&amp;p={{ page }}">{{ page }}</a>
                 {% endif %}
             </span>
             {% endfor %}

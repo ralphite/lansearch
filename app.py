@@ -8,10 +8,13 @@ es = Elasticsearch()
 
 
 class Result:
-    def __init__(self, link, name, details):
+    def __init__(self, link, machine, path, name, size, mtime):
         self.link = link
         self.name = name
-        self.details = details
+        self.machine = machine
+        self.path = path
+        self.size = size
+        self.mtime = mtime
 
 
 @app.route('/')
@@ -25,7 +28,7 @@ def search():
     offset = request.args.get('p', 1, type=int)
     res = es.search(index="file-index", doc_type='file',
                     body={
-                        "size": 10,
+                        "size": 100,
                         "from": (offset - 1 or 0) * 10,
                         "query": {
                             "match": {
@@ -35,7 +38,11 @@ def search():
                     })
     results = []
     for hit in res['hits']['hits']:
-        r = Result(hit['_source']['path'] + '/' + hit['_source']['name'], hit['_source']['name'], hit['_source'])
+        r = Result(
+            '\\\\' + hit['_source']['machine'] + '/shared/' + hit['_source']['path'] + '/' + hit['_source']['name'],
+            hit['_source']['machine'], hit['_source']['path'],
+            hit['_source']['name'], hit['_source']['size'],
+            hit['_source']['mtime'])
         results.append(r)
 
     query_time = 0.032
