@@ -28,7 +28,7 @@ def search():
     offset = request.args.get('p', 1, type=int)
     res = es.search(index="file-index", doc_type='file',
                     body={
-                        "size": 100,
+                        "size": 10,
                         "from": (offset - 1 or 0) * 10,
                         "query": {
                             "match": {

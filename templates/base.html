@@ -18,10 +18,27 @@
 </header>
 
 <form action="/search" method="get">
-    <div class="form-group">
-        <input type="text" class="form-control searchbox" name="q"
-               placeholder="Search" value="{{ query_text }}">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Normal Search<span
+                            class="caret"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li><a href="#">Normal Search</a></li>
+                        <li><a href="#">Wildcard Search</a></li>
+                        <li><a href="#">Regex Search</a></li>
+                    </ul>
+                </div>
+                <input type="text" class="form-control searchbox" name="q"
+                       placeholder="Search" value="{{ query_text }}">
+                <!-- /btn-group -->
+            </div>
+            <!-- /input-group -->
+        </div>
+        <!-- /.col-lg-6 -->
     </div>
+    <!-- /.row -->
     <!--input type="submit" class="btn btn-default searchbutton"-->
 </form>
 
@@ -40,6 +57,7 @@
 </footer>
 
 <script src="/static/javascript/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="//getbootstrap.com/dist/js/bootstrap.min.js"></script>
 <script src="/static/javascript/lansearch.js" type="text/javascript"></script>
 </body>
 </html>
