@@ -15,5 +15,6 @@ $(document).ready(function() {
 });
 
 var select = function() {
-    alert('sss');
+    $('.searchtype').removeClass('btn-info').removeClass('selected').addClass('btn-default');
+    $(event.target).addClass('btn-info').addClass('selected');
 };
