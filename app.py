@@ -25,14 +25,16 @@ def index():
 @app.route('/search')
 def search():
     query_text = request.args.get('q', '', type=str)
+    print query_text
     offset = request.args.get('p', 1, type=int)
+    search_type = request.args.get('t', 'match', type=str)
     res = es.search(index="file-index", doc_type='file',
                     body={
                         "size": 10,
-                        "from": (offset - 1 or 0) * 10,
+                        "from": offset * 10,
                         "query": {
-                            "match": {
-                                "_all": query_text
+                            search_type: {
+                                "name.untouched": query_text
                             }
                         }
                     })
@@ -45,8 +47,8 @@ def search():
             hit['_source']['mtime'])
         results.append(r)
 
-    query_time = 0.032
-    total_result_count = len(results)
+    query_time = res['took'] / 1000.0
+    total_result_count = res['hits']['total']
     current_page = offset
     pages = [1, 2, 3, '..', 9]
     return render_template('search.html', results=results,

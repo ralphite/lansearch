@@ -12,9 +12,25 @@ $(document).ready(function() {
 
     $('.searchbox').focus();
 
+    var t = getUrlParameter('t') || 'match';
+    $('#'+t).removeClass('btn-default').addClass('btn-info').addClass('selected');
 });
 
-var select = function() {
-    $('.searchtype').removeClass('btn-info').removeClass('selected').addClass('btn-default');
-    $(event.target).addClass('btn-info').addClass('selected');
+function getUrlParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+}
+
+var search = function() {
+    var q = $('.searchbox').val();
+    window.location.href = 'search?q=' + q + '&t=' + $(event.target).attr('id');
 };

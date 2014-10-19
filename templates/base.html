@@ -21,9 +21,15 @@
         <div class="col-lg-12">
             <div class="input-group">
                 <div class="input-group-btn">
-                    <button type="button" class="searchtype btn btn-info selected" onclick="select()">Keyword</button>
-                    <button type="button" class="searchtype btn btn-default" onclick="select()">Wildcard</button>
-                    <button type="button" class="searchtype btn btn-default" onclick="select()">Regex</button>
+                    <button type="button" class="searchtype btn btn-default"
+                            id="match" onclick="search()">Match
+                    </button>
+                    <button type="button" class="searchtype btn btn-default"
+                            id="wildcard" onclick="search()">Wildcard
+                    </button>
+                    <button type="button" class="searchtype btn btn-default"
+                            id="regexp" onclick="search()">Regexp
+                    </button>
                 </div>
                 <input type="text" class="form-control searchbox" name="q"
                        placeholder="Search" value="{{ query_text }}">
@@ -40,7 +46,7 @@
     <div class="col-lg-12 col-sm-12 col-12 row" id="copy">
         <span class="col-md-10"></span>
         <span class="col-md-2">© 2014 Ralph Wen</span>
-        </div>
+    </div>
 </footer>
 
 <script src="/static/javascript/jquery-1.11.1.min.js" type="text/javascript"></script>

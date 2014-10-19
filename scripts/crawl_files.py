@@ -28,7 +28,7 @@ for line in open('files.txt'):
     mtime = ls[1][:12]
     added = 'false'
     deleted = 'false'
-    res = '"' + '","'.join((machine, path, file_name, size, mtime, added, deleted)) + '"'
+    res = '"' + '","'.join((machine, '/shared' + path[1:], file_name, size, mtime, added, deleted)) + '"'
     fw.write("\n" + res)
 
 fw.flush()
