@@ -11,4 +11,9 @@ $(document).ready(function() {
     });
 
     $('.searchbox').focus();
+
 });
+
+var select = function() {
+    alert('sss');
+};
