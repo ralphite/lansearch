@@ -17,6 +17,19 @@ class Result:
         self.mtime = mtime
 
 
+def to_human_readable(n):
+    n = int(n)
+    if n < 1024:
+        return ('%.2f' % n) + ' Bytes'
+    n /= 1024.0
+    if n < 1024:
+        return ('%.2f' % n) + ' KB'
+    n /= 1024.0
+    if n < 1024:
+        return ('%.2f' % n) + ' MB'
+    n /= 1024.0
+    return ('%.2f' % n) + ' GB'
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -30,11 +43,11 @@ def search():
     search_type = request.args.get('t', 'match', type=str)
     res = es.search(index="file-index", doc_type='file',
                     body={
-                        "size": 10,
-                        "from": offset * 10,
+                        "size": 20,
+                        "from": (offset - 1) * 10,
                         "query": {
                             search_type: {
-                                "name.untouched": query_text
+                                "full": query_text
                             }
                         }
                     })
@@ -43,11 +56,11 @@ def search():
         r = Result(
             '\\\\' + hit['_source']['machine'] + '/shared/' + hit['_source']['path'] + '/' + hit['_source']['name'],
             hit['_source']['machine'], hit['_source']['path'],
-            hit['_source']['name'], hit['_source']['size'],
+            hit['_source']['name'], to_human_readable(hit['_source']['size']),
             hit['_source']['mtime'])
         results.append(r)
 
-    query_time = res['took'] / 1000.0
+    query_time = str(res['took'] / 1000.0)
     total_result_count = res['hits']['total']
     current_page = offset
     pages = [1, 2, 3, '..', 9]

@@ -12,8 +12,7 @@ for line in open('files.csv'):
         line = line[:len(line) - 1]
         ls = line.split('","')
         # machine,path,name,size,mtime,added,deleted
-        full = "\\\\" + ls[0] + ls[1] + "\\" + ls[2]
-        full = full.replace("/", "\\")
+        full = "//" + ls[0] + ls[1] + "/" + ls[2]
         doc = {
             'machine': ls[0],
             'path': ls[1],
