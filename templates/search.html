@@ -16,6 +16,7 @@
                 <th>Name</th>
                 <th>Size</th>
                 <th>Mtime</th>
+                <th></th>
             </tr>
             </thead>
             {% for result in results %}
@@ -27,15 +28,18 @@
                 <td>{{ result.size }}</td>
                 <td>{{ result.mtime }}</td>
                 <td>
-                    <button class="copy-button" data-clipboard-text="aaa">Copy Path</button>
-                </td>
-                <td>
-                    <button>Copy Path with File Name</button>
+                    <button type="button" data-clipboard-text="{{ result.link }}"
+                            class="copy-button btn btn-default btn-xs">
+                        Copy Path
+                    </button>
+                    <button type="button" data-clipboard-text="{{ result.link[:result.link.rfind('\\')] }}"
+                            class="copy-button btn btn btn-default btn-xs">
+                        Copy Path with File Name
+                    </button>
                 </td>
             </tr>
             </tbody>
             {% endfor %}
-
         </table>
 
         <ul class="pagination">
