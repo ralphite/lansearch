@@ -46,7 +46,7 @@ def search():
     res = es.search(index="file-index", doc_type='file',
                     body={
                         "size": items_per_page,
-                        "from": (offset - 1) * 10,
+                        "from": (offset - 1) * items_per_page,
                         "query": {
                             search_type: {
                                 "full": query_text
@@ -71,7 +71,7 @@ def search():
     query_time = str(res['took'] / 1000.0)
     total_result_count = res['hits']['total']
     current_page = offset
-    pages = [i + 1 for i in range(total_result_count // items_per_page)]
+    pages = [i + 1 for i in range(total_result_count // items_per_page + 1)]
     return render_template('search.html', results=results,
                            total_result_count=total_result_count,
                            query_text=query_text, query_time=query_time,
