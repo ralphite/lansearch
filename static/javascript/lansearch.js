@@ -34,3 +34,23 @@ var search = function() {
     var q = $('.searchbox').val();
     window.location.href = 'search?q=' + q + '&t=' + $(event.target).attr('id');
 };
+
+$('.copy-button').each(function() {
+  //Create a new clipboard client
+  var clip = new ZeroClipboard.Client();
+  clip.setHandCursor( true );
+
+  //Glue the clipboard client to the last td in each row
+  clip.glue(this);
+
+ // var url = $(this).attr("href");
+  //Grab the text from the parent row of the icon
+ // var code = $(this).children('span').html();
+  clip.setText('aaa');
+
+  //Add a complete event to let the user know the text was copied
+  clip.addEventListener('complete', function(client, text) {
+    alert("Copied text to clipboard:\n" + text);
+    //popUp(url);
+  });
+});
