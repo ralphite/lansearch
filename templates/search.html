@@ -20,7 +20,7 @@
             </thead>
             {% for result in results %}
             <tbody>
-            <tr>
+            <tr title="{{ result.link }}">
                 <td>{{ result.machine }}</td>
                 <td>{{ result.path }}</td>
                 <td>{{ result.name }}</td>
