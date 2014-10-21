@@ -72,7 +72,21 @@ def search():
     query_time = str(res['took'] / 1000.0)
     total_result_count = res['hits']['total']
     current_page = offset
-    pages = [i + 1 for i in range(total_result_count // items_per_page + 1)]
+    page_count = total_result_count // items_per_page + 1
+    pages = []
+    if page_count > 10:
+        if current_page < 7:
+            pages = [i + 1 for i in range(7)]
+            pages += ['..', page_count - 1, page_count]
+        elif current_page > page_count - 7:
+            pages = [1, 2, '..']
+            pages += [page_count - 6 + i for i in range(7)]
+        else:
+            pages += [1, 2, 3, '..']
+            pages += [current_page - 1, current_page, current_page + 1, '..']
+            pages += [page_count - 1, page_count]
+    else:
+        pages = [i + 1 for i in range(page_count)]
     return render_template('search.html', results=results,
                            total_result_count=total_result_count,
                            query_text=query_text, query_time=query_time,
