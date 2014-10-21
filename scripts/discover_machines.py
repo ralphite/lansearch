@@ -11,3 +11,8 @@ https://www.google.com/search?q=python+nmap
 http://xael.org/norman/python/python-nmap/
 https://pypi.python.org/pypi/python-libnmap/0.6.1
 '''
+
+import nmap
+
+nm = nmap.PortScanner()
+nm.scan('127.0.0.1', '22-443')
