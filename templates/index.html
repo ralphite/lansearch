@@ -1,4 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
+<form action="/search" method="get">
+    <div class="row" style="padding-top: 80px;padding-bottom: 800px;" >
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="searchtype btn btn-default"
+                            id="match" onclick="search()">Match
+                    </button>
+                    <button type="button" class="searchtype btn btn-default"
+                            id="wildcard" onclick="search()">Wildcard
+                    </button>
+                    <button type="button" class="searchtype btn btn-default"
+                            id="regexp" onclick="search()">Regexp
+                    </button>
+                </div>
+                <input type="text" class="form-control searchbox" name="q"
+                       placeholder="Search" value="{{ query_text }}">
+            </div>
+        </div>
+    </div>
+</form>
 {% endblock %}

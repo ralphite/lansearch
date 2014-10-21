@@ -1,6 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
+<form action="/search" method="get">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="searchtype btn btn-default"
+                            id="match" onclick="search()">Match
+                    </button>
+                    <button type="button" class="searchtype btn btn-default"
+                            id="wildcard" onclick="search()">Wildcard
+                    </button>
+                    <button type="button" class="searchtype btn btn-default"
+                            id="regexp" onclick="search()">Regexp
+                    </button>
+                </div>
+                <input type="text" class="form-control searchbox" name="q"
+                       placeholder="Search" value="{{ query_text }}">
+            </div>
+        </div>
+    </div>
+</form>
+
 <div id='content'>
     <div id='results'>
         <div id='row'>
@@ -75,4 +97,12 @@
         </ul>
     </div>
 </div>
+
+<footer>
+    <hr>
+    <div class="col-lg-12 col-sm-12 col-12 row" id="copy">
+        <span class="col-md-9"></span>
+        <span class="col-md-2">© 2014 Ralph Wen</span>
+    </div>
+</footer>
 {% endblock %}
