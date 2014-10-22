@@ -1,4 +1,5 @@
 ### To do
 
+- check if file already added to ES before adding
 - not_analyzed search
-- folder scan script
+- fix name to long bug (os.walk can do it)

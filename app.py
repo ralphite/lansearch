@@ -60,7 +60,7 @@ def search():
         name = hit['_source']['name']
         size = to_human_readable(hit['_source']['size'])
         mtime = hit['_source']['mtime']
-        link = '//' + machine + path + '/' + name
+        link = path + '/' + name
         link = link.replace('/', '\\')
         if len(path) > 40:
             path = path[:37] + '...'

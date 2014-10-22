@@ -3,3 +3,4 @@ venv/
 scripts/*.txt
 scripts/*.csv
 scripts/test.sh
+scripts/tmp
