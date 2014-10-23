@@ -6,7 +6,7 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 
 
-def push(root_folder):
+def load(root_folder):
     """
     parse files under root_folder and push to ES server
     root_folder should be a unicode string to support
@@ -43,6 +43,6 @@ def push(root_folder):
                 print e
 
 if __name__ == '__main__':
-    push(ur'\\chn-yawen\shared')
-    push(ur'\\chn-xihou1\share')
-    push(ur'\\corp\china\Public Folders')
+    load(ur'\\chn-yawen\shared')
+    load(ur'\\chn-xihou1\share')
+    load(ur'\\corp\china\Public Folders')

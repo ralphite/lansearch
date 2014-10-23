@@ -17,62 +17,21 @@ class Result:
         self.mtime = mtime
 
 
-def to_human_readable(n):
-    n = int(n)
-    if n < 1024:
-        return ('%.2f' % n) + ' Bytes'
-    n /= 1024.0
-    if n < 1024:
-        return ('%.2f' % n) + ' KB'
-    n /= 1024.0
-    if n < 1024:
-        return ('%.2f' % n) + ' MB'
-    n /= 1024.0
-    return ('%.2f' % n) + ' GB'
+def to_human_readable(size):
+    size = int(size)
+    if size < 1024:
+        return ('%d' % size) + ' Bytes'
+    size /= 1024.0
+    if size < 1024:
+        return ('%.2f' % size) + ' KB'
+    size /= 1024.0
+    if size < 1024:
+        return ('%.2f' % size) + ' MB'
+    size /= 1024.0
+    return ('%.2f' % size) + ' GB'
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-    query_text = request.args.get('q', '', type=str)
-    # print query_text
-    offset = request.args.get('p', 1, type=int)
-    search_type = request.args.get('t', 'match', type=str)
-    items_per_page = 20
-    res = es.search(index="file-index", doc_type='file',
-                    body={
-                        "size": items_per_page,
-                        "from": (offset - 1) * items_per_page,
-                        "query": {
-                            search_type: {
-                                "full": query_text
-                            }
-                        }
-                    })
-    results = []
-    for hit in res['hits']['hits']:
-        machine = hit['_source']['machine']
-        path = hit['_source']['path']
-        name = hit['_source']['name']
-        size = to_human_readable(hit['_source']['size'])
-        mtime = hit['_source']['mtime']
-        link = path + '/' + name
-        link = link.replace('/', '\\')
-        if len(path) > 40:
-            path = path[:37] + '...'
-        if len(name) > 30:
-            name = name[:27] + '...'
-        r = Result(link, machine, path, name, size, mtime)
-        results.append(r)
-
-    query_time = str(res['took'] / 1000.0)
-    total_result_count = res['hits']['total']
-    current_page = offset
-    page_count = total_result_count // items_per_page + 1
+def gen_pagination_list(page_count, current_page):
     pages = []
     if page_count > 10:
         if current_page < 7:
@@ -87,11 +46,54 @@ def search():
             pages += [page_count - 1, page_count]
     else:
         pages = [i + 1 for i in range(page_count)]
+    return pages
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    query_text = request.args.get('q', '', type=str)
+    offset = request.args.get('p', 1, type=int)
+    query_type = request.args.get('t', 'match', type=str)
+    items_per_page = 20
+    resp = es.search(index="file-index", doc_type='file',
+                     body={
+                         "size": items_per_page,
+                         "from": (offset - 1) * items_per_page,
+                         "query": {
+                             query_type: {
+                                 "full": query_text
+                             }
+                         }
+                     })
+    results = []
+    for hit in resp['hits']['hits']:
+        machine = hit['_source']['machine']
+        path = hit['_source']['path']
+        name = hit['_source']['name']
+        size = to_human_readable(hit['_source']['size'])
+        mtime = hit['_source']['mtime']
+        link = path + '/' + name
+        link = link.replace('/', '\\')
+        if len(path) > 40:
+            path = path[:37] + '...'
+        if len(name) > 30:
+            name = name[:27] + '...'
+        results.append(Result(link, machine, path, name, size, mtime))
+
+    query_time = str(resp['took'] / 1000.0)
+    total_result_count = resp['hits']['total']
+    pages = gen_pagination_list(total_result_count // items_per_page + 1, offset)
+
     return render_template('search.html', results=results,
                            total_result_count=total_result_count,
                            query_text=query_text, query_time=query_time,
-                           pages=pages, current_page=current_page,
-                           query_type=search_type)
+                           pages=pages, current_page=offset,
+                           query_type=query_type)
 
 
 if __name__ == '__main__':
