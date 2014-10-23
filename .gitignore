@@ -4,3 +4,6 @@ scripts/*.txt
 scripts/*.csv
 scripts/test.sh
 scripts/tmp
+scripts/*exe
+scripts/config.py
+*py[co]

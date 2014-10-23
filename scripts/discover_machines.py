@@ -1,18 +1,25 @@
-__author__ = 'yawen'
+__author__ = 'Ralph'
 '''
-machines.csv
-machine, add time
-
-use python nmap lib
-
-http://serverfault.com/questions/63233/best-method-and-tools-for-local-ip-scanning/63242#63242
-
-https://www.google.com/search?q=python+nmap
-http://xael.org/norman/python/python-nmap/
-https://pypi.python.org/pypi/python-libnmap/0.6.1
+scan ip range and get available machines.
+list shared folders.
 '''
 
 import nmap
+import socket
+from smb.SMBConnection import SMBConnection
 
-nm = nmap.PortScanner()
-nm.scan('127.0.0.1', '22-443')
+from config import config
+
+
+def get_share_list(user, password, localhost_name, remote_target_name):
+    conn = SMBConnection(user, password, localhost_name, remote_target_name, use_ntlm_v2=True)
+    ip = socket.gethostbyname(remote_target_name)
+    print ip, type(ip)
+    conn.connect(ip)
+    rs = conn.listShares()
+    return [r'\\' + remote_target_name + '\\' + r.name.lower() for r in rs if r.name.lower()[-1] != '$']
+
+
+if __name__ == '__main__':
+    print get_share_list(config['user'], config['password'],
+                         config['localhost'], 'chn-yawen')
