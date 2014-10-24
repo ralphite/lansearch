@@ -49,6 +49,7 @@ def scan_and_push_to_es(root_folder):
                         'size': size,
                         'mtime': str(datetime.fromtimestamp(int(mtime)))
                     }
+                    print '>' * 10, fullname
                     es.index(index="file-index", doc_type='file', body=doc)
             except Exception, e:
                 print e

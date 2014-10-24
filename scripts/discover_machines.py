@@ -33,11 +33,12 @@ if __name__ == '__main__':
     #for folder in get_folders():
     #    print folder
     for folder in open('folders.csv', 'r'):
-        folder = folder.strip()
-        print 'scanning ', folder
-        try:
-            folder = unicode(folder)
-            #print folder, type(folder)
-            scan_and_push_to_es(folder)
-        except Exception, e:
-            print '-' * 10 + 'Error ', folder, e
+        if not folder[0] == '#':
+            folder = folder.strip()
+            print 'scanning ', folder
+            try:
+                folder = unicode(folder)
+                #print folder, type(folder)
+                scan_and_push_to_es(folder)
+            except Exception, e:
+                print '-' * 10 + 'Error ', folder, e

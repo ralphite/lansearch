@@ -18,6 +18,7 @@ Local Area Network Search for Windows shared files
     
 - incremental crawl and update
 - schedulers
+- multi thread
 
 ### To do
 
