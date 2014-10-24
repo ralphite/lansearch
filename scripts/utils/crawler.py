@@ -16,6 +16,7 @@ import socket
 import ping
 import win32net
 import win32com.client
+from warnings import warn
 from smb.SMBConnection import SMBConnection
 
 from scripts.config import config
@@ -51,6 +52,8 @@ def check_machine_availability(machine_name):
     :param machine_name: machine name
     :return: boolean indicating whether machine is up or down
     """
+    warn("this method doesn't guarantee to return True when"
+         " machine is actually available and thus is deprecated.")
     try:
         console = ConsoleUtil()
         console.disable_console_output()

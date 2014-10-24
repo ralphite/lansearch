@@ -8,24 +8,25 @@ from elasticsearch import Elasticsearch
 
 def create_index(index_name, definition):
     # es.indices.create(index="file-index", ignore=400)
-    # run create_index.sh to create index
+    # use shell script for now
     pass
 
 
 def drop_index(index_name):
+    # use shell script for now
     pass
 
 
-def check_already_exists(fullname):
+def check_if_already_exists(fullname):
     # to do
     return True
 
 
-def scan_and_push2es(root_folder):
+def scan_and_push_to_es(root_folder):
     """
-    parse files under root_folder and push to ES server
-    root_folder should be a unicode string to support
-    unicode file and folder names
+    scan files under root_folder and push to ES server
+    :param root_folder: folder to scan in unicode
+    :return: None
     """
     assert root_folder[:2] == r'\\'
 
@@ -36,7 +37,7 @@ def scan_and_push2es(root_folder):
         for name in files:
             try:
                 fullname = (os.path.join(root, name)).encode('utf-8')
-                if check_already_exists(fullname):
+                if check_if_already_exists(fullname):
                     path = os.path.dirname(fullname)
                     size = os.path.getsize(fullname.decode('utf-8'))  # buggy when long name
                     mtime = os.path.getmtime(fullname.decode('utf-8'))  # buggy when long name
@@ -54,6 +55,9 @@ def scan_and_push2es(root_folder):
 
 
 if __name__ == '__main__':
-    scan_and_push2es(ur'\\chn-yawen\shared')
-    scan_and_push2es(ur'\\chn-xihou1\share')
-    scan_and_push2es(ur'\\corp\china\Public Folders')
+    try:
+        scan_and_push_to_es(ur'\\chn-yawen\shared')
+    except Exception, e:
+        print e
+    #scan_and_push_to_es(ur'\\chn-xihou1\share')
+    #scan_and_push_to_es(ur'\\corp\china\Public Folders')
