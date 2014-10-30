@@ -3,20 +3,10 @@ __author__ = 'Ralph'
 from flask import Flask, render_template, request
 from elasticsearch import Elasticsearch
 
-from utils.helpers import to_human_readable, gen_pagination_list
+from utils.helpers import to_human_readable, gen_pagination_list, Result
 
 app = Flask(__name__)
 es = Elasticsearch()
-
-
-class Result:
-    def __init__(self, link, machine, path, name, size, mtime):
-        self.link = link
-        self.name = name
-        self.machine = machine
-        self.path = path
-        self.size = size
-        self.mtime = mtime
 
 
 @app.route('/')

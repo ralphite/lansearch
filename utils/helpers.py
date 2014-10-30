@@ -1,5 +1,6 @@
 __author__ = 'yawen'
 
+
 def to_human_readable(size):
     size = int(size)
     if size < 1024:
@@ -30,3 +31,13 @@ def gen_pagination_list(page_count, current_page):
     else:
         pages = [i + 1 for i in range(page_count)]
     return pages
+
+
+class Result:
+    def __init__(self, link, machine, path, name, size, mtime):
+        self.link = link
+        self.name = name
+        self.machine = machine
+        self.path = path
+        self.size = size
+        self.mtime = mtime
