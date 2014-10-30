@@ -7,15 +7,30 @@ from utils.console import print_dot
 from utils.crawler import get_current_domain, get_machines_in_domain, get_shared_folders_list
 
 
-app = create_app()
+# importing configured env vars
+if os.path.exists('config/.env'):
+    print 'Importing env vars from .env'
+    for l in open('.env'):
+        var = l.strip().split('=')
+        if len(var) == 2:
+            os.environ[var[0]] = var[1]
+
+app = create_app(os.getenv('LANSEARCH_CONFIG') or 'default')
 manager = Manager(app)
 
-COV = None  # code coverage
+
+# starting code coverage
+COV = None
 if os.environ.get('LANSEARCH_COVERAGE'):
     import coverage
 
     COV = coverage.coverage(branch=True, include='*')
     COV.start()
+
+
+########################################
+# commands
+########################################
 
 
 def make_shell_context():
@@ -84,7 +99,6 @@ def retrieve_shared_folder_list(machine_list=None, filter=None):
 
 
 @manager.command
-@manager.option('-s', '--shared-folder-list', dest='shared_folder_list', default=None)
 def crawl(shared_folder_list=None):
     """
 
