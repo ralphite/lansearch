@@ -3,7 +3,7 @@ __author__ = 'Ralph'
 import re
 
 from config import config
-from utils.crawler import get_belonging_domain, get_machines_in_domain, \
+from utils.crawler import get_current_domain, get_machines_in_domain, \
     check_machine_availability, get_shared_folders_list
 from utils.es_wrapper import scan_and_push_to_es
 
@@ -11,7 +11,7 @@ from utils.es_wrapper import scan_and_push_to_es
 def get_folders():
     domain = config['domain']
     if domain == '':
-        domain = get_belonging_domain()
+        domain = get_current_domain()
 
     res = []
     for machine in get_machines_in_domain(domain):

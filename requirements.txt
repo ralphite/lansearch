@@ -1,9 +1,12 @@
 Flask==0.10.1
+Flask-Script==2.0.5
 Jinja2==2.7.3
 MarkupSafe==0.23
 Werkzeug==0.9.6
+coverage==3.7.1
 elasticsearch==1.2.0
 itsdangerous==0.24
+ping==0.2
 pyasn1==0.1.7
 pysmb==1.1.13
 python-nmap==0.3.4

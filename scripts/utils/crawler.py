@@ -23,7 +23,7 @@ from scripts.config import config
 from console import ConsoleUtil
 
 
-def get_belonging_domain():
+def get_current_domain():
     """
     get domain of localhost
     """
@@ -88,6 +88,15 @@ def get_shared_folders_list(user, password, localhost_name, remote_target_name):
     return [r'\\' + remote_target_name + '\\' + r.name.lower()
             for r in rs if r.name.lower()[-1] != '$']
 
+
+def get_file_count(folder):
+    """
+    get total number of files in a folder, recursively
+    :param folder: folder name in unicode
+    :return: number of files
+    """
+    # to be implemented. there is no efficient implementation for now.
+    pass
 
 if __name__ == '__main__':
     print '#' * 30
