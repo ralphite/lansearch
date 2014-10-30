@@ -2,11 +2,12 @@ import os
 
 from flask_script import Manager, Shell
 
-from app.app import app
+from app import create_app, db
 from utils.console import print_dot
 from utils.crawler import get_current_domain, get_machines_in_domain, get_shared_folders_list
 
 
+app = create_app()
 manager = Manager(app)
 
 COV = None  # code coverage
@@ -18,7 +19,7 @@ if os.environ.get('LANSEARCH_COVERAGE'):
 
 
 def make_shell_context():
-    return dict(app=app)
+    return dict(app=app, db=db)
 
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
@@ -42,6 +43,16 @@ def create_index():
     """
 
     # to do
+
+
+@manager.command
+def recreate_tables():
+    """
+    dangerous
+    :return:
+    """
+    db.drop_all()
+    db.create_all()
 
 
 @manager.command

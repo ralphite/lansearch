@@ -5,4 +5,5 @@ data/
 *.csv
 *.pyc
 *.pyo
+config/config.py
 scripts/config.py

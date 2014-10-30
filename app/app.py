@@ -5,7 +5,9 @@ from elasticsearch import Elasticsearch
 
 from utils.helpers import to_human_readable, gen_pagination_list, Result
 
-app = Flask(__name__)
+from .import create_app
+
+app = create_app()
 es = Elasticsearch()
 
 
