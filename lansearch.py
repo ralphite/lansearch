@@ -7,7 +7,7 @@ from utils.console import print_dot
 from utils.crawler import get_current_domain, get_machines_in_domain, get_shared_folders_list
 
 
-# importing configured env vars
+# import configured env vars
 if os.path.exists('config/.env'):
     print 'Importing env vars from .env'
     for l in open('.env'):
@@ -19,7 +19,7 @@ app = create_app(os.getenv('LANSEARCH_CONFIG') or 'default')
 manager = Manager(app)
 
 
-# starting code coverage
+# start code coverage
 COV = None
 if os.environ.get('LANSEARCH_COVERAGE'):
     import coverage
