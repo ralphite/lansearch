@@ -3,7 +3,7 @@ import os
 from flask_script import Manager, Command, Shell
 
 from app import app
-from scripts.utils.crawler import get_current_domain
+from utils.crawler import get_current_domain
 
 
 manager = Manager(app)

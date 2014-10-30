@@ -1,9 +1,8 @@
 .idea/
 venv/
-scripts/*.txt
-scripts/*.csv
-scripts/test.sh
-scripts/tmp
-scripts/*exe
+data/
+*.txt
+*.csv
+*.pyc
+*.pyo
 scripts/config.py
-*py[co]
