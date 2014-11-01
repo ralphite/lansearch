@@ -1,22 +1,18 @@
-__author__ = 'Ralph'
+__author__ = 'Yadong'
 
-from flask import Flask, render_template, request
-from elasticsearch import Elasticsearch
+from flask import Flask, render_template, request, Blueprint
 
 from utils.helpers import to_human_readable, gen_pagination_list, Result
 
-from .import create_app
-
-app = create_app()
-es = Elasticsearch()
+from . import main, es
 
 
-@app.route('/')
+@main.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/search', methods=['GET', 'POST'])
+@main.route('/search', methods=['GET', 'POST'])
 def search():
     query_text = request.args.get('q', '', type=str)
     offset = request.args.get('p', 1, type=int)
@@ -56,7 +52,3 @@ def search():
                            query_text=query_text, query_time=query_time,
                            pages=pages, current_page=offset,
                            query_type=query_type)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)

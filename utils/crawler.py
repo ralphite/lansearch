@@ -19,7 +19,7 @@ import win32com.client
 from warnings import warn
 from smb.SMBConnection import SMBConnection
 
-from scripts.config import config
+from config.config import config
 from console import ConsoleUtil
 
 
