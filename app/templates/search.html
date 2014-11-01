@@ -1,108 +1,109 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="/search" method="get">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="input-group">
-                <div class="input-group-btn">
-                    <button type="button" class="searchtype btn btn-default"
-                            id="match" onclick="search()">Match
-                    </button>
-                    <button type="button" class="searchtype btn btn-default"
-                            id="wildcard" onclick="search()">Wildcard
-                    </button>
-                    <button type="button" class="searchtype btn btn-default"
-                            id="regexp" onclick="search()">Regexp
-                    </button>
+    <form action="/search" method="get">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="searchtype btn btn-default"
+                                id="match" onclick="search()">Match
+                        </button>
+                        <button type="button" class="searchtype btn btn-default"
+                                id="wildcard" onclick="search()">Wildcard
+                        </button>
+                        <button type="button" class="searchtype btn btn-default"
+                                id="regexp" onclick="search()">Regexp
+                        </button>
+                    </div>
+                    <input type="text" class="form-control searchbox" name="q"
+                           placeholder="Search" value="{{ query_text }}">
                 </div>
-                <input type="text" class="form-control searchbox" name="q"
-                       placeholder="Search" value="{{ query_text }}">
             </div>
         </div>
-    </div>
-</form>
+    </form>
 
-<div id='content'>
-    <div id='results'>
-        <div id='row'>
-            <p></p>
+    <div id='content'>
+        <div id='results'>
+            <div id='row'>
+                <p></p>
 
-            <p>Found {{ total_result_count }} results in {{ query_time }} seconds</p>
+                <p>Found {{ total_result_count }} results in {{ query_time }} seconds</p>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Machine</th>
+                    <th>Path</th>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Mtime</th>
+                    <th></th>
+                </tr>
+                </thead>
+                {% for result in results %}
+                    <tbody>
+                    <tr title="{{ result.link }}">
+                        <td>{{ result.machine }}</td>
+                        <td>{{ result.path }}</td>
+                        <td>{{ result.name }}</td>
+                        <td>{{ result.size }}</td>
+                        <td>{{ result.mtime }}</td>
+                        <td>
+                            <button type="button" data-clipboard-text="{{ result.link }}"
+                                    class="copy-button btn btn-default btn-xs">
+                                Copy Path with File Name
+                            </button>
+                            <button type="button" data-clipboard-text="{{ result.link[:result.link.rfind('\\')] }}"
+                                    class="copy-button btn btn btn-default btn-xs">
+                                Copy Path
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+
+            <ul class="pagination">
+                {% if current_page == 1 %}
+                    <li class="disabled">
+                        <a href="#">&laquo;</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="/search?q={{ query_text }}&amp;p={{ current_page-1 }}&amp;t={{ query_type }}">&laquo;</a>
+                    </li>
+                {% endif %}
+                {% for page in pages %}
+                    {% if page == current_page or page == '..' %}
+                        <li class="disabled">
+                            <a href="">{{ page }}</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="/search?q={{ query_text }}&amp;p={{ page }}&amp;t={{ query_type }}">{{ page }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if current_page == pages[-1] %}
+                    <li class="disabled">
+                        <a href="#">&raquo;</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="/search?q={{ query_text }}&amp;p=
+                                {{ current_page+1 }}&amp;t={{ query_type }}">&raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Machine</th>
-                <th>Path</th>
-                <th>Name</th>
-                <th>Size</th>
-                <th>Mtime</th>
-                <th></th>
-            </tr>
-            </thead>
-            {% for result in results %}
-            <tbody>
-            <tr title="{{ result.link }}">
-                <td>{{ result.machine }}</td>
-                <td>{{ result.path }}</td>
-                <td>{{ result.name }}</td>
-                <td>{{ result.size }}</td>
-                <td>{{ result.mtime }}</td>
-                <td>
-                    <button type="button" data-clipboard-text="{{ result.link }}"
-                            class="copy-button btn btn-default btn-xs">
-                        Copy Path with File Name
-                    </button>
-                    <button type="button" data-clipboard-text="{{ result.link[:result.link.rfind('\\')] }}"
-                            class="copy-button btn btn btn-default btn-xs">
-                        Copy Path
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-            {% endfor %}
-        </table>
-
-        <ul class="pagination">
-            {% if current_page == 1 %}
-            <li class="disabled">
-                <a href="#">&laquo;</a>
-            </li>
-            {% else %}
-            <li>
-                <a href="/search?q={{ query_text }}&amp;p={{ current_page-1 }}&amp;t={{ query_type }}">&laquo;</a>
-            </li>
-            {% endif %}
-            {% for page in pages %}
-            {% if page == current_page or page == '..' %}
-            <li class="disabled">
-                <a href="">{{ page }}</a>
-            </li>
-            {% else %}
-            <li>
-                <a href="/search?q={{ query_text }}&amp;p={{ page }}&amp;t={{ query_type }}">{{ page }}</a>
-            </li>
-            {% endif %}
-            {% endfor %}
-            {% if current_page == pages[-1] %}
-            <li class="disabled">
-                <a href="#">&raquo;</a>
-            </li>
-            {% else %}
-            <li>
-                <a href="/search?q={{ query_text }}&amp;p={{ current_page+1 }}&amp;t={{ query_type }}">&raquo;</a>
-            </li>
-            {% endif %}
-        </ul>
     </div>
-</div>
 
-<footer>
-    <hr>
-    <div class="col-lg-12 col-sm-12 col-12 row" id="copy">
-        <span class="col-md-9"></span>
-        <span class="col-md-2">© 2014 Ralph Wen</span>
-    </div>
-</footer>
+    <footer>
+        <hr>
+        <div class="col-lg-12 col-sm-12 col-12 row" id="copy">
+            <span class="col-md-9"></span>
+            <span class="col-md-2">© 2014 Ralph Wen</span>
+        </div>
+    </footer>
 {% endblock %}

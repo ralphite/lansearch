@@ -1,0 +1,16 @@
+.disabled {
+    /*Disabled link style*/
+    color: black;
+    pointer-events: none;
+    cursor: default;
+}
+
+.name {
+    padding-top: 40px;
+    text-align: center;
+    padding-bottom: 20px;
+    font-family: museo-slab, Georgia, "Times New Roman", Times, serif;
+    font-weight: 500;
+    font-size: 60px;
+    text-shadow: 4px 3px 0px rgba(0, 0, 0, 0.15);
+}
