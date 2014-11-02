@@ -5,6 +5,9 @@ from flask_script import Manager, Shell
 from app import create_app, db
 from utils.console import print_dot
 from utils.crawler import get_current_domain, get_machines_in_domain, get_shared_folders_list
+from utils.helpers import query_yes_no
+from utils.es_wrapper import drop_index as drop, create_index as create
+from config import config
 
 
 # import configured env vars
@@ -15,7 +18,8 @@ if os.path.exists('config/.env'):
         if len(var) == 2:
             os.environ[var[0]] = var[1]
 
-app = create_app(os.getenv('LANSEARCH_CONFIG') or 'default')
+config_type = os.getenv('LANSEARCH_CONFIG') or 'default'
+app = create_app(config_type)
 manager = Manager(app)
 
 
@@ -46,8 +50,8 @@ def drop_index():
     drop file index
     :return:
     """
-
-    # to do
+    if query_yes_no('This will erase all data in this index. Continue?', default='no'):
+        drop(config.Config.INDEX_NAME)
 
 
 @manager.command
@@ -56,8 +60,7 @@ def create_index():
     create file index
     :return:
     """
-
-    # to do
+    create(config.Config.INDEX_NAME, config.Config.INDEX_BODY)
 
 
 @manager.command

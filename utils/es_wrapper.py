@@ -6,15 +6,21 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 
 
-def create_index(index_name, definition):
+def create_index(index_name, body):
     # es.indices.create(index="file-index", ignore=400)
     # use shell script for now
-    pass
+    es = Elasticsearch()
+    es.indices.create(index_name, body)
 
 
 def drop_index(index_name):
-    # use shell script for now
-    pass
+    """
+    delete an index in ES
+    :param index_name: index name
+    :return: None
+    """
+    es = Elasticsearch()
+    es.indices.delete(index_name)
 
 
 def check_if_already_exists(fullname):
@@ -60,5 +66,3 @@ if __name__ == '__main__':
         scan_and_push_to_es(ur'\\chn-yawen\shared')
     except Exception, e:
         print e
-    #scan_and_push_to_es(ur'\\chn-xihou1\share')
-    #scan_and_push_to_es(ur'\\corp\china\Public Folders')
