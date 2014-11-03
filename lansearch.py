@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from flask_script import Manager, Shell
 
@@ -7,7 +8,8 @@ from utils.console import print_dot
 from utils.crawler import get_current_domain, get_machines_in_domain, get_shared_folders_list
 from utils.helpers import query_yes_no
 from utils.es_wrapper import drop_index as drop, create_index as create
-from config import config
+from config.config import config, Config
+from app.models import Machine, SharedFolder, SharedFile
 
 
 # import configured env vars
@@ -32,9 +34,9 @@ if os.environ.get('LANSEARCH_COVERAGE'):
     COV.start()
 
 
-########################################
+# #######################################
 # commands
-########################################
+# #######################################
 
 
 def make_shell_context():
@@ -51,7 +53,7 @@ def drop_index():
     :return:
     """
     if query_yes_no('This will erase all data in this index. Continue?', default='no'):
-        drop(config.Config.INDEX_NAME)
+        drop(Config.INDEX_NAME)
 
 
 @manager.command
@@ -60,7 +62,7 @@ def create_index():
     create file index
     :return:
     """
-    create(config.Config.INDEX_NAME, config.Config.INDEX_BODY)
+    create(Config.INDEX_NAME, Config.INDEX_BODY)
 
 
 @manager.command
@@ -69,8 +71,9 @@ def recreate_tables():
     dangerous
     :return:
     """
-    db.drop_all()
-    db.create_all()
+    if query_yes_no('This will erase all data in the database. Continue?', default='no'):
+        db.drop_all()
+        db.create_all()
 
 
 @manager.command
@@ -83,10 +86,20 @@ def retrieve_machine_list(domain=None):
     if not domain:
         domain = get_current_domain()
 
-    machines = get_machines_in_domain(domain)
-    for i in range(10):
-        print_dot()
-        # need to use multi threading
+    with db.session.no_autoflush:
+        for m in get_machines_in_domain(domain):
+            machine = Machine()
+            machine.name = m
+            machine.domain = domain
+            '''
+            # del if existing
+            old = Machine.query.filter_by(name=m).first()
+
+            if old:
+                db.session.delete(old)
+                db.session.commit()'''
+            db.session.add(machine)
+        db.session.commit()
 
 
 @manager.command

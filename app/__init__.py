@@ -2,9 +2,7 @@ from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 
 from config.config import config
-
-
-db = SQLAlchemy()
+from models import db
 
 
 def create_app(config_name):

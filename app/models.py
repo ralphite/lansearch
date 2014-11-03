@@ -9,7 +9,7 @@ db = SQLAlchemy()
 class Machine(db.Model):
     __tablename__ = 'machines'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True)
+    name = db.Column(db.String(64))
     domain = db.Column(db.String(64))
     discovered_time = db.Column(db.DateTime(), default=datetime.utcnow)
 
@@ -17,8 +17,8 @@ class Machine(db.Model):
 class SharedFolder(db.Model):
     __tablename__ = 'folders'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text())
-    machine = db.Column(db.String(64))
+    name = db.Column(db.Unicode())
+    machine = db.Column(db.Unicode())
     discovered_time = db.Column(db.DateTime(), default=datetime.utcnow)
 
 
