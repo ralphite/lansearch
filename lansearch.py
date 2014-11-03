@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 
 from flask_script import Manager, Shell
@@ -14,11 +15,12 @@ from app.models import Machine, SharedFolder, SharedFile
 
 # import configured env vars
 if os.path.exists('config/.env'):
-    print 'Importing env vars from .env'
-    for l in open('.env'):
+    print 'Importing env vars from .env',
+    for l in open('config/.env'):
         var = l.strip().split('=')
         if len(var) == 2:
             os.environ[var[0]] = var[1]
+    print '.' * 10 + 'done'
 
 config_type = os.getenv('LANSEARCH_CONFIG') or 'default'
 app = create_app(config_type)
@@ -82,7 +84,6 @@ def retrieve_machine_list(domain=None):
     retrieve machine list in the current domain. result will be saved to
     machines table in data/machines.db
     """
-
     if not domain:
         domain = get_current_domain()
 
@@ -97,21 +98,46 @@ def retrieve_machine_list(domain=None):
 
             if old:
                 db.session.delete(old)
-                db.session.commit()'''
+                db.session.commit()
+            '''
             db.session.add(machine)
         db.session.commit()
 
 
 @manager.command
-def retrieve_shared_folder_list(machine_list=None, filter=None):
-    """
-    retrieve list of shared folders and save to ES.
+def filter_machines(pattern=None):
+    machines = Machine.query.all()
+    res = [m for m in machines if re.match(pattern, m.name)]
+    return res
 
-    :param filter:
+
+@manager.command
+def retrieve_shared_folder_list(machine_list=None, pattern=None):
+    """
+    retrieve list of shared folders and save to DB.
+
+    :param pattern:
     :return:
     """
+    machine_list = machine_list or Machine.query.all()
+    machines = [m for m in machine_list if re.match(pattern, m.name)]
+    user = os.getenv('user')
+    password = os.getenv('password')
+    localhost_name = os.getenv('localhost_name')
 
-    # to do
+    for machine in machines:
+        print '>' * 80
+        try:
+            for folder in get_shared_folders_list(
+                    user, password, localhost_name, machine.name.encode('ascii', 'ignore')):
+                sf = SharedFolder()
+                sf.name = folder
+                sf.machine = machine.name.encode('ascii', 'ignore')
+                db.session.add(sf)
+                print sf
+        except Exception, e:
+            print machine.name, e
+    db.session.commit()
 
 
 @manager.command

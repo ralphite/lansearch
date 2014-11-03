@@ -78,15 +78,14 @@ def get_shared_folders_list(user, password, localhost_name, remote_target_name):
     :param password: password
     :param localhost_name: name of the local machine
     :param remote_target_name: name of the remote target machine
-    :return: list of folder names in this format "\\machine-name\folder-name"
+    :return: list of folder names
     """
     conn = SMBConnection(user, password, localhost_name,
                          remote_target_name, use_ntlm_v2=True)
     ip = socket.gethostbyname(remote_target_name)
     conn.connect(ip)
     rs = conn.listShares()
-    return [r'\\' + remote_target_name + '\\' + r.name.lower()
-            for r in rs if r.name.lower()[-1] != '$']
+    return [r.name.lower() for r in rs if r.name.lower()[-1] != '$']
 
 
 def get_file_count(folder):
@@ -97,6 +96,7 @@ def get_file_count(folder):
     """
     # to be implemented. there is no efficient implementation for now.
     pass
+
 
 if __name__ == '__main__':
     print '#' * 30

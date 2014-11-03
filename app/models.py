@@ -13,6 +13,9 @@ class Machine(db.Model):
     domain = db.Column(db.String(64))
     discovered_time = db.Column(db.DateTime(), default=datetime.utcnow)
 
+    def __repr__(self):
+        return self.domain + '/' + self.name
+
 
 class SharedFolder(db.Model):
     __tablename__ = 'folders'
@@ -20,6 +23,9 @@ class SharedFolder(db.Model):
     name = db.Column(db.Unicode())
     machine = db.Column(db.Unicode())
     discovered_time = db.Column(db.DateTime(), default=datetime.utcnow)
+
+    def __repr__(self):
+        return r'\\' + self.machine + '\\' + self.name
 
 
 class SharedFile(db.Model):
