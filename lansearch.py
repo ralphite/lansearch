@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 from time import time
 from multiprocessing import Pool as ThreadPool
 from datetime import datetime
@@ -86,6 +87,7 @@ def retrieve_machine_list(domain=None):
     retrieve machine list in the current domain. result will be saved to
     machines table in data/machines.db
     """
+    start_time = time()
     if not domain:
         domain = get_current_domain()
 
@@ -103,7 +105,9 @@ def retrieve_machine_list(domain=None):
                 db.session.commit()
             '''
             db.session.add(machine)
+            sys.stdout.write('.')
         db.session.commit()
+        print ' Runtime:', time() - start_time, 'seconds'
 
 
 @manager.command
@@ -115,19 +119,20 @@ def filter_machines(pattern=None):
 
 def worker(machine):
     # print '>' * 80
-    try:
-        for folder in get_shared_folders_list(
-                os.getenv('user'), os.getenv('password'),
-                os.getenv('localhost_name'), machine.name.encode('ascii', 'ignore')):
-            sf = SharedFolder()
-            sf.name = folder
-            sf.machine = machine.name.encode('ascii', 'ignore')
-            with app.app_context():
+    with app.app_context():
+        try:
+            for folder in get_shared_folders_list(
+                    os.getenv('user'), os.getenv('password'),
+                    os.getenv('localhost_name'), machine.name.encode('ascii', 'ignore')):
+                sf = SharedFolder()
+                sf.name = unicode(folder)
+                sf.machine = machine.name.encode('ascii', 'ignore')
                 db.session.add(sf)
-            print sf
-    except Exception, e:
-        # print machine.name, e
-        pass
+                sys.stdout.write('.')
+        except Exception, e:
+            # print machine.name, e
+            pass
+        db.session.commit()
 
 
 @manager.command
@@ -146,9 +151,14 @@ def retrieve_shared_folder_list(machine_list=None, pattern=None):
     pool = ThreadPool(Config.DISCOVER_SHARED_FOLDERS_THREADS)
     pool.map(worker, machines)
 
-    db.session.commit()
-    print time() - start_time
+    print ' Runtime: ', time() - start_time, 'seconds'
 
+
+@manager.command
+def filter_shared_folders(pattern=None):
+    folders = SharedFolder.query.all()
+    res = [f for f in folders if re.match(pattern, f.name)]
+    return res
 
 
 @manager.command
