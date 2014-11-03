@@ -8,22 +8,19 @@ from datetime import datetime
 from flask_script import Manager, Shell
 
 from app import create_app, db
-from utils.console import print_dot
 from utils.crawler import get_current_domain, get_machines_in_domain, get_shared_folders_list
 from utils.helpers import query_yes_no, synchronized
-from utils.es_wrapper import drop_index as drop, create_index as create
+from utils.es_wrapper import drop_index as drop, create_index as create, scan_and_push_to_es
 from config.config import config, Config
 from app.models import Machine, SharedFolder, SharedFile
 
 
 # import configured env vars
 if os.path.exists('config/.env'):
-    # print 'Importing env vars from .env',
     for l in open('config/.env'):
         var = l.strip().split('=')
         if len(var) == 2:
             os.environ[var[0]] = var[1]
-            # print '.' * 10 + 'done'
 
 config_type = os.getenv('LANSEARCH_CONFIG') or 'default'
 app = create_app(config_type)
@@ -55,7 +52,6 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 def drop_index():
     """
     drop file index
-    :return:
     """
     if query_yes_no('This will erase all data in this index. Continue?', default='no'):
         drop(Config.INDEX_NAME)
@@ -65,7 +61,6 @@ def drop_index():
 def create_index():
     """
     create file index
-    :return:
     """
     create(Config.INDEX_NAME, Config.INDEX_BODY)
 
@@ -74,7 +69,6 @@ def create_index():
 def recreate_tables():
     """
     dangerous
-    :return:
     """
     if query_yes_no('This will erase all data in the database. Continue?', default='no'):
         db.drop_all()
@@ -118,7 +112,6 @@ def filter_machines(pattern=None):
 
 
 def worker(machine):
-    # print '>' * 80
     with app.app_context():
         try:
             for folder in get_shared_folders_list(
@@ -130,7 +123,6 @@ def worker(machine):
                 db.session.add(sf)
                 sys.stdout.write('.')
         except Exception, e:
-            # print machine.name, e
             pass
         db.session.commit()
 
@@ -139,9 +131,6 @@ def worker(machine):
 def retrieve_shared_folder_list(machine_list=None, pattern=None):
     """
     retrieve list of shared folders and save to DB.
-
-    :param pattern:
-    :return:
     """
     machine_list = machine_list or Machine.query.all()
     machines = [m for m in machine_list if re.match(pattern, m.name)]
@@ -162,14 +151,21 @@ def filter_shared_folders(pattern=None):
 
 
 @manager.command
-def crawl(shared_folder_list=None):
+def crawl(shared_folder_list=None, pattern=None):
     """
-
-    :param shared_folder_list:
-    :return:
+    crawl list of shared files and push to ES.
     """
-
-    # to do
+    # shared_folder_list = [ur'\\chn-yawen\shared']
+    shared_folder_list = shared_folder_list or SharedFolder.query.all()
+    pattern = pattern or ''
+    for folder in shared_folder_list:
+        print folder,
+        try:
+            start_time = time()
+            scan_and_push_to_es(unicode(str(folder)))
+            print 'Runtime: ', time() - start_time, 'seconds'
+        except Exception, e:
+            pass
 
 
 @manager.command

@@ -2,6 +2,7 @@ __author__ = 'Ralph'
 
 import os
 import os.path
+import sys
 from datetime import datetime
 from elasticsearch import Elasticsearch
 
@@ -55,10 +56,10 @@ def scan_and_push_to_es(root_folder):
                         'size': size,
                         'mtime': str(datetime.fromtimestamp(int(mtime)))
                     }
-                    print '>' * 10, fullname
+                    sys.stdout.write('.')
                     es.index(index="file-index", doc_type='file', body=doc)
             except Exception, e:
-                print e
+                pass
 
 
 if __name__ == '__main__':

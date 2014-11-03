@@ -32,9 +32,3 @@ class ConsoleUtil:
 
     def enable_console_output(self):
         sys.stdout, sys.stderr, sys.stdin = self.old_printerators
-
-
-def print_dot(interval=1):
-    start_time = time.time()
-    time.sleep(start_time + interval - time.time())
-    print '.'
