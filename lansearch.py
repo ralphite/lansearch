@@ -1,5 +1,7 @@
 import os
 import re
+from time import time
+from multiprocessing import Pool as ThreadPool
 from datetime import datetime
 
 from flask_script import Manager, Shell
@@ -7,7 +9,7 @@ from flask_script import Manager, Shell
 from app import create_app, db
 from utils.console import print_dot
 from utils.crawler import get_current_domain, get_machines_in_domain, get_shared_folders_list
-from utils.helpers import query_yes_no
+from utils.helpers import query_yes_no, synchronized
 from utils.es_wrapper import drop_index as drop, create_index as create
 from config.config import config, Config
 from app.models import Machine, SharedFolder, SharedFile
@@ -15,12 +17,12 @@ from app.models import Machine, SharedFolder, SharedFile
 
 # import configured env vars
 if os.path.exists('config/.env'):
-    print 'Importing env vars from .env',
+    # print 'Importing env vars from .env',
     for l in open('config/.env'):
         var = l.strip().split('=')
         if len(var) == 2:
             os.environ[var[0]] = var[1]
-    print '.' * 10 + 'done'
+            # print '.' * 10 + 'done'
 
 config_type = os.getenv('LANSEARCH_CONFIG') or 'default'
 app = create_app(config_type)
@@ -111,6 +113,23 @@ def filter_machines(pattern=None):
     return res
 
 
+def worker(machine):
+    # print '>' * 80
+    try:
+        for folder in get_shared_folders_list(
+                os.getenv('user'), os.getenv('password'),
+                os.getenv('localhost_name'), machine.name.encode('ascii', 'ignore')):
+            sf = SharedFolder()
+            sf.name = folder
+            sf.machine = machine.name.encode('ascii', 'ignore')
+            with app.app_context():
+                db.session.add(sf)
+            print sf
+    except Exception, e:
+        # print machine.name, e
+        pass
+
+
 @manager.command
 def retrieve_shared_folder_list(machine_list=None, pattern=None):
     """
@@ -121,23 +140,15 @@ def retrieve_shared_folder_list(machine_list=None, pattern=None):
     """
     machine_list = machine_list or Machine.query.all()
     machines = [m for m in machine_list if re.match(pattern, m.name)]
-    user = os.getenv('user')
-    password = os.getenv('password')
-    localhost_name = os.getenv('localhost_name')
 
-    for machine in machines:
-        print '>' * 80
-        try:
-            for folder in get_shared_folders_list(
-                    user, password, localhost_name, machine.name.encode('ascii', 'ignore')):
-                sf = SharedFolder()
-                sf.name = folder
-                sf.machine = machine.name.encode('ascii', 'ignore')
-                db.session.add(sf)
-                print sf
-        except Exception, e:
-            print machine.name, e
+    start_time = time()
+
+    pool = ThreadPool(Config.DISCOVER_SHARED_FOLDERS_THREADS)
+    pool.map(worker, machines)
+
     db.session.commit()
+    print time() - start_time
+
 
 
 @manager.command

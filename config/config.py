@@ -5,7 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     DEBUG = False
-    DISCOVER_SHARED_FOLDERS_THREADS = 10
+    DISCOVER_SHARED_FOLDERS_THREADS = 20
     SCAN_FILES_THREADS = 10
     INDEX_NAME = 'file-index'
     INDEX_BODY = \
