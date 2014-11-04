@@ -35,3 +35,12 @@ var search = function () {
     var q = $('.searchbox').val();
     window.location.href = 'search?q=' + q + '&t=' + $(event.target).attr('id');
 };
+
+var app = angular.module("app", [], function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+});
+
+app.controller("getDomainCtrl", function($scope){
+    $scope.hello = "aaa";
+});
