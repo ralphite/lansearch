@@ -3,7 +3,35 @@
 {% block content %}
 
 <div ng-controller="getDomainCtrl">
-    [[hello]]
+    <form class="form-inline" role="form">
+        <button type="submit" class="btn btn-primary" ng-click="getCurrentDomain()">Get Current Domain</button>
+        <div class="form-group">
+            <input type="text" class="form-control" id="inputPassword2"
+                   placeholder="Domain Name" ng-model="domain">
+        </div>
+        <div class="form-group">
+            <p class="form-control-static">get current or type a domain to use</p>
+        </div>
+    </form>
+    <hr>
+    <form class="form-inline" role="form">
+        <button type="submit" class="btn btn-primary">Get Machine List</button>
+    </form>
+    <table class="table">
+        <tr>
+            <th>Machine Name</th>
+            <th>Discovered Time</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>chn-yawes</td>
+            <td>1231324</td>
+            <td>
+                <button type="submit" class="btn btn-primary">Get Shared Folders</button>
+            </td>
+        </tr>
+    </table>
+    <hr>
 </div>
 
 {% endblock %}

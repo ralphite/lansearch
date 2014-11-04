@@ -42,5 +42,8 @@ var app = angular.module("app", [], function($interpolateProvider) {
 });
 
 app.controller("getDomainCtrl", function($scope){
-    $scope.hello = "aaa";
+    $scope.domain = "Domain Name";
+    $scope.getCurrentDomain = function() {
+        $scope.domain = "test-corp";
+    };
 });
