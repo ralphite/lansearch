@@ -36,14 +36,21 @@ var search = function () {
     window.location.href = 'search?q=' + q + '&t=' + $(event.target).attr('id');
 };
 
-var app = angular.module("app", [], function($interpolateProvider) {
+var app = angular.module("app", [], function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
 
-app.controller("getDomainCtrl", function($scope){
+app.controller("getDomainCtrl", function ($scope, $http) {
     $scope.domain = "Domain Name";
-    $scope.getCurrentDomain = function() {
-        $scope.domain = "test-corp";
+    $scope.getCurrentDomain = function () {
+        $scope.domain = $http.get('api/v1/get-current-domain').success(function (data) {
+            if (data.error) {
+                alert(data.error);
+            }
+            else {
+                $scope.domain = data.domain;
+            }
+        });
     };
 });

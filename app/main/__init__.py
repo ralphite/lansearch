@@ -6,5 +6,4 @@ from elasticsearch import Elasticsearch
 main = Blueprint('main', __name__)
 es = Elasticsearch()
 
-from . import views  # has to be at the end (after main
-# declaration so that there is no nested import error
+from . import views  # avoid circular import error
