@@ -56,6 +56,49 @@
         </div>
     </div>
     <hr>
+
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" ng-click="getFolderList()">Get Shared Folder List</button>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="folderFilter"
+                   placeholder="regexp" ng-model="folderFilter">
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"> Reverse
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default">Filter</button>
+    </form>
+    <p></p>
+
+    <div class="scrollContainer">
+        <div class="innerScroll">
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        <button type="submit" class="btn btn-xs btn-default">Select All</button>
+                    </th>
+                    <th>Folder Name</th>
+                    <th>Discovered Time</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="folder in folderList">
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    <td>[[folder.name]]</td>
+                    <td>[[folder.discovered_time]]</td>
+                    <td>
+                        <button type="submit" class="btn btn-xs btn-primary">Get Shared Folders</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <hr>
 </div>
 
 {% endblock %}
