@@ -16,6 +16,7 @@ import socket
 import ping
 import win32net
 import win32com.client
+import pythoncom
 from warnings import warn
 from smb.SMBConnection import SMBConnection
 
@@ -38,6 +39,7 @@ def get_machines_in_domain(domain):
     :param domain: name of the domain
     :return: list of machines in the domain
     """
+    pythoncom.CoInitialize()
     adsi = win32com.client.Dispatch("ADsNameSpaces")
     nt = adsi.GetObject("", "WinNT:")
     result = nt.OpenDSObject("WinNT://%s" % domain, "", "", 0)

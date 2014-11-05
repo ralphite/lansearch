@@ -40,7 +40,7 @@ var app = angular.module("app", [], function ($interpolateProvider) {
 });
 
 app.controller("getDomainCtrl", function ($scope, $http) {
-    $scope.domain = "Domain Name";
+    $scope.domain = "domain";
     $scope.machineList = [
         {
             "name": "chn-yawen",
