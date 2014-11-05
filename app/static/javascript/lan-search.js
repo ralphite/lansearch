@@ -8,9 +8,7 @@ $(document).ready(function () {
 
     $('.searchbox').focus(function (event) {
         this.selectionStart = this.selectionEnd = this.value.length;
-    });
-
-    $('.searchbox').focus();
+    }).focus();
 
     var t = getUrlParameter('t') || 'match';
     $('#' + t).removeClass('btn-default').addClass('btn-info').addClass('selected');
@@ -43,13 +41,35 @@ var app = angular.module("app", [], function ($interpolateProvider) {
 
 app.controller("getDomainCtrl", function ($scope, $http) {
     $scope.domain = "Domain Name";
+    $scope.machineList = [
+        {
+            "name": "chn-yawen",
+            "discovered_time": 'now'
+        },
+        {
+            "name": "chn-yawen2",
+            "discovered_time": 'now1'
+        },
+        {
+            "name": "chn-yawen3",
+            "discovered_time": 'now2'
+        }
+    ];
     $scope.getCurrentDomain = function () {
-        $scope.domain = $http.get('api/v1/get-current-domain').success(function (data) {
+        $http.get('api/v1/get-current-domain').success(function (data) {
             if (data.error) {
                 alert(data.error);
-            }
-            else {
+            } else {
                 $scope.domain = data.domain;
+            }
+        });
+    };
+    $scope.getMachineList = function () {
+        $http.get('api/v1/get-machine-list').success(function (data) {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                $scope.machineList = data.machineList;
             }
         });
     };
