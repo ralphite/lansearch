@@ -5,6 +5,7 @@ data/
 *.csv
 *.pyc
 *.pyo
+*.log
 *.sqlite
 config/*env
 scripts/config.py
