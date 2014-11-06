@@ -1,12 +1,5 @@
 $(document).ready(function () {
-    $('#search form, #results form').submit(function (event) {
-        if ($.trim($('.searchbox').val()).length > 0) {
-            return true;
-        }
-        return false;
-    });
-
-    $('.searchbox').focus(function (event) {
+    $('.search-box').focus(function (event) {
         this.selectionStart = this.selectionEnd = this.value.length;
     }).focus();
 
@@ -29,11 +22,6 @@ function getUrlParameter(sParam) {
     }
 }
 
-var search = function () {
-    var q = $('.searchbox').val();
-    window.location.href = 'search?q=' + q + '&t=' + $(event.target).attr('id');
-};
-
 var app = angular.module("app", [], function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -45,14 +33,6 @@ app.controller("getDomainCtrl", function ($scope, $http) {
         {
             "name": "chn-yawen",
             "discovered_time": 'now'
-        },
-        {
-            "name": "chn-yawen2",
-            "discovered_time": 'now1'
-        },
-        {
-            "name": "chn-yawen3",
-            "discovered_time": 'now2'
         }
     ];
     $scope.getCurrentDomain = function () {
@@ -72,5 +52,26 @@ app.controller("getDomainCtrl", function ($scope, $http) {
                 $scope.machineList = data.machineList;
             }
         });
+    };
+});
+
+app.controller("indexSearchCtrl", function ($scope) {
+    $scope.searchType = 'match';
+    $scope.search = function () {
+        // console.log($(event));
+        if ($(event.target).hasClass('btn')) {
+            var q = $('.search-box').val();
+            $('.search-type').removeClass('btn-info').addClass('btn-default');
+            $(event.target).addClass('btn-info');
+            $scope.searchType = $(event.target).attr('id');
+            if (q) {
+                window.location.href = 'search?q=' + q + '&t=' + $scope.searchType;
+            }
+        }
+        else if ($(event.target).hasClass('search-box')) {
+            if (event.keyCode == 13) {
+                window.location.href = 'search?q=' + $('.search-box').val() + '&t=' + $scope.searchType;
+            }
+        }
     };
 });

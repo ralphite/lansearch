@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="/search" method="get">
+    <form>
         <div class="row" style="padding-top: 80px;padding-bottom: 800px;">
             <div class="col-lg-2"></div>
             <div class="col-lg-8">
-                <div class="input-group">
+                <div class="input-group" ng-controller="indexSearchCtrl">
                     <div class="input-group-btn">
-                        <button type="button" class="searchtype btn btn-default"
-                                id="match" onclick="search()">Match
+                        <button type="button" class="search-type btn btn-default"
+                                id="match" ng-click="search()">Match
                         </button>
-                        <button type="button" class="searchtype btn btn-default"
-                                id="wildcard" onclick="search()">Wildcard
+                        <button type="button" class="search-type btn btn-default"
+                                id="wildcard" ng-click="search()">Wildcard
                         </button>
-                        <button type="button" class="searchtype btn btn-default"
-                                id="regexp" onclick="search()">Regexp
+                        <button type="button" class="search-type btn btn-default"
+                                id="regexp" ng-click="search()">Regexp
                         </button>
                     </div>
-                    <input type="text" class="form-control searchbox" name="q"
-                           placeholder="Search" value="{{ query_text }}">
+                    <input type="text" class="form-control search-box" name="q"
+                           placeholder="Search" value="{{ query_text }}" ng-keydown="search()">
                 </div>
             </div>
         </div>
