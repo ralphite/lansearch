@@ -71,6 +71,7 @@ class Config:
                 }
             }
         }
+    ITEMS_PER_PAGE = 20
 
     @staticmethod
     def init_app(app):
