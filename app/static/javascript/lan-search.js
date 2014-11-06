@@ -82,6 +82,8 @@ app.controller("indexSearchCtrl", function ($scope) {
 app.controller("searchCtrl", function ($scope, $http) {
     $scope.searchType = getUrlParameter('t') || 'match';
     $scope.searchResult = {};
+    $scope.itemsPerPage = 20;
+    $scope.page = 1;
     var get = function (url) {
         $http.get(url).success(
             function (data) {
@@ -89,13 +91,15 @@ app.controller("searchCtrl", function ($scope, $http) {
                     alert(data.error);
                 } else {
                     $scope.searchResult = data.searchResult;
+                    $scope.itemsPerPage = data.itemsPerPage;
+                    $scope.page = data.offset;
                 }
             }
         );
     };
     $scope.search = function () {
         var q = $.trim($('#search-box').val());
-        debugger;
+        //debugger;
         if ($(event.target).hasClass('btn')) {
             $('.search-type').removeClass('btn-info').addClass('btn-default');
             $(event.target).addClass('btn-info');
@@ -106,7 +110,8 @@ app.controller("searchCtrl", function ($scope, $http) {
                 get('/api/v1/' + 'search?q=' + q + '&t=' + $scope.searchType);
             }
         }
-        else if ($(event.target).hasClass('search-box')) {
+        else {
+            console.log(event);
             if (event.keyCode == 13) {
                 if (q) get('/api/v1/' + 'search?q=' + q + '&t=' + $scope.searchType);
             }

@@ -18,7 +18,7 @@
                         </button>
                     </div>
                     <input type="text" class="form-control" id="search-box" name="q"
-                           placeholder="Search" value="{{ query_text }}">
+                           placeholder="Search" value="{{ query_text }}" ng-keydown="search()">
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
             <div id='row'>
                 <p></p>
 
-                <p>Found {{ total_result_count }} results in {{ query_time }} seconds</p>
+                <p>Found [[searchResult.hits.total]] results in [[searchResult.took/1000]] seconds</p>
             </div>
             <table class="table table-hover">
                 <thead>
@@ -42,27 +42,25 @@
                     <th></th>
                 </tr>
                 </thead>
-                {% for result in results %}
                 <tbody>
-                <tr title="{{ result.link }}">
-                    <td>{{ result.machine }}</td>
-                    <td>{{ result.path }}</td>
-                    <td>{{ result.name }}</td>
-                    <td>{{ result.size }}</td>
-                    <td>{{ result.mtime }}</td>
+                <tr ng-repeat="result in searchResult.hits.hits" title="[[result._source.full]]">
+                    <td>[[ result._source.machine ]]</td>
+                    <td>[[ result._source.path ]]</td>
+                    <td>[[ result._source.name ]]</td>
+                    <td>[[ result._source.size ]]</td>
+                    <td>[[ result._source.mtime ]]</td>
                     <td>
-                        <button type="button" data-clipboard-text="{{ result.link }}"
+                        <button type="button" data-clipboard-text="[[ result._source.full ]]"
                                 class="copy-button btn btn-default btn-xs">
                             Copy Path with File Name
                         </button>
-                        <button type="button" data-clipboard-text="{{ result.link[:result.link.rfind('\\')] }}"
+                        <button type="button" data-clipboard-text="[[ result._source.path ]]"
                                 class="copy-button btn btn btn-default btn-xs">
                             Copy Path
                         </button>
                     </td>
                 </tr>
                 </tbody>
-                {% endfor %}
             </table>
 
             <ul class="pagination">
