@@ -57,20 +57,58 @@ app.controller("getDomainCtrl", function ($scope, $http) {
 
 app.controller("indexSearchCtrl", function ($scope) {
     $scope.searchType = 'match';
-    $scope.search = function () {
-        // console.log($(event));
+    $scope.indexSearch = function () {
+        var q = $.trim($('#search-box').val());
         if ($(event.target).hasClass('btn')) {
-            var q = $('.search-box').val();
             $('.search-type').removeClass('btn-info').addClass('btn-default');
             $(event.target).addClass('btn-info');
             $scope.searchType = $(event.target).attr('id');
             if (q) {
                 window.location.href = 'search?q=' + q + '&t=' + $scope.searchType;
+            } else {
+                $('#search-box').val('');
+            }
+        }
+        else {
+            //console.log(event.keyCode);
+            //debugger;
+            if (event.keyCode == 13) {
+                window.location.href = 'search?q=' + q + '&t=' + $scope.searchType;
+            }
+        }
+    };
+});
+
+app.controller("searchCtrl", function ($scope, $http) {
+    $scope.searchType = getUrlParameter('t') || 'match';
+    $scope.searchResult = {};
+    var get = function (url) {
+        $http.get(url).success(
+            function (data) {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    $scope.searchResult = data.searchResult;
+                }
+            }
+        );
+    };
+    $scope.search = function () {
+        var q = $.trim($('#search-box').val());
+        debugger;
+        if ($(event.target).hasClass('btn')) {
+            $('.search-type').removeClass('btn-info').addClass('btn-default');
+            $(event.target).addClass('btn-info');
+            $scope.searchType = $(event.target).attr('id');
+            if (q) {
+                //window.location.href = 'search?q=' + q + '&t=' + $scope.searchType;
+                //console.log('search?q=' + q + '&t=' + $scope.searchType);
+                get('/api/v1/' + 'search?q=' + q + '&t=' + $scope.searchType);
             }
         }
         else if ($(event.target).hasClass('search-box')) {
             if (event.keyCode == 13) {
-                window.location.href = 'search?q=' + $('.search-box').val() + '&t=' + $scope.searchType;
+                if (q) get('/api/v1/' + 'search?q=' + q + '&t=' + $scope.searchType);
             }
         }
     };

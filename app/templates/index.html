@@ -8,17 +8,17 @@
                 <div class="input-group" ng-controller="indexSearchCtrl">
                     <div class="input-group-btn">
                         <button type="button" class="search-type btn btn-default"
-                                id="match" ng-click="search()">Match
+                                id="match" ng-click="indexSearch()">Match
                         </button>
                         <button type="button" class="search-type btn btn-default"
-                                id="wildcard" ng-click="search()">Wildcard
+                                id="wildcard" ng-click="indexSearch()">Wildcard
                         </button>
                         <button type="button" class="search-type btn btn-default"
-                                id="regexp" ng-click="search()">Regexp
+                                id="regexp" ng-click="indexSearch()">Regexp
                         </button>
                     </div>
-                    <input type="text" class="form-control search-box" name="q"
-                           placeholder="Search" value="{{ query_text }}" ng-keydown="search()">
+                    <input type="text" class="form-control" id="search-box" name="q"
+                           placeholder="Search" value="{{ query_text }}" ng-keydown="indexSearch()">
                 </div>
             </div>
         </div>

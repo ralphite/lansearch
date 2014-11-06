@@ -1,22 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="/search" method="get">
+<div ng-controller="searchCtrl">
+    <form>
         <div class="row">
             <div class="col-lg-12">
                 <div class="input-group">
                     <div class="input-group-btn">
                         <button type="button" class="search-type btn btn-default"
-                                id="match" onclick="search()">Match
+                                id="match" ng-click="search()">Match
                         </button>
                         <button type="button" class="search-type btn btn-default"
-                                id="wildcard" onclick="search()">Wildcard
+                                id="wildcard" ng-click="search()">Wildcard
                         </button>
                         <button type="button" class="search-type btn btn-default"
-                                id="regexp" onclick="search()">Regexp
+                                id="regexp" ng-click="search()">Regexp
                         </button>
                     </div>
-                    <input type="text" class="form-control search-box" name="q"
+                    <input type="text" class="form-control" id="search-box" name="q"
                            placeholder="Search" value="{{ query_text }}">
                 </div>
             </div>
@@ -42,58 +43,58 @@
                 </tr>
                 </thead>
                 {% for result in results %}
-                    <tbody>
-                    <tr title="{{ result.link }}">
-                        <td>{{ result.machine }}</td>
-                        <td>{{ result.path }}</td>
-                        <td>{{ result.name }}</td>
-                        <td>{{ result.size }}</td>
-                        <td>{{ result.mtime }}</td>
-                        <td>
-                            <button type="button" data-clipboard-text="{{ result.link }}"
-                                    class="copy-button btn btn-default btn-xs">
-                                Copy Path with File Name
-                            </button>
-                            <button type="button" data-clipboard-text="{{ result.link[:result.link.rfind('\\')] }}"
-                                    class="copy-button btn btn btn-default btn-xs">
-                                Copy Path
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
+                <tbody>
+                <tr title="{{ result.link }}">
+                    <td>{{ result.machine }}</td>
+                    <td>{{ result.path }}</td>
+                    <td>{{ result.name }}</td>
+                    <td>{{ result.size }}</td>
+                    <td>{{ result.mtime }}</td>
+                    <td>
+                        <button type="button" data-clipboard-text="{{ result.link }}"
+                                class="copy-button btn btn-default btn-xs">
+                            Copy Path with File Name
+                        </button>
+                        <button type="button" data-clipboard-text="{{ result.link[:result.link.rfind('\\')] }}"
+                                class="copy-button btn btn btn-default btn-xs">
+                            Copy Path
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
                 {% endfor %}
             </table>
 
             <ul class="pagination">
                 {% if current_page == 1 %}
-                    <li class="disabled">
-                        <a href="#">&laquo;</a>
-                    </li>
+                <li class="disabled">
+                    <a href="#">&laquo;</a>
+                </li>
                 {% else %}
-                    <li>
-                        <a href="/search?q={{ query_text }}&amp;p={{ current_page-1 }}&amp;t={{ query_type }}">&laquo;</a>
-                    </li>
+                <li>
+                    <a href="/search?q={{ query_text }}&amp;p={{ current_page-1 }}&amp;t={{ query_type }}">&laquo;</a>
+                </li>
                 {% endif %}
                 {% for page in pages %}
-                    {% if page == current_page or page == '..' %}
-                        <li class="disabled">
-                            <a href="">{{ page }}</a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="/search?q={{ query_text }}&amp;p={{ page }}&amp;t={{ query_type }}">{{ page }}</a>
-                        </li>
-                    {% endif %}
+                {% if page == current_page or page == '..' %}
+                <li class="disabled">
+                    <a href="">{{ page }}</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="/search?q={{ query_text }}&amp;p={{ page }}&amp;t={{ query_type }}">{{ page }}</a>
+                </li>
+                {% endif %}
                 {% endfor %}
                 {% if current_page == pages[-1] %}
-                    <li class="disabled">
-                        <a href="#">&raquo;</a>
-                    </li>
+                <li class="disabled">
+                    <a href="#">&raquo;</a>
+                </li>
                 {% else %}
-                    <li>
-                        <a href="/search?q={{ query_text }}&amp;p=
+                <li>
+                    <a href="/search?q={{ query_text }}&amp;p=
                                 {{ current_page+1 }}&amp;t={{ query_type }}">&raquo;</a>
-                    </li>
+                </li>
                 {% endif %}
             </ul>
         </div>
@@ -106,4 +107,5 @@
             <span class="col-md-2">© 2014 Ralph Wen</span>
         </div>
     </footer>
+</div>
 {% endblock %}
