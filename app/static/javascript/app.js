@@ -28,7 +28,6 @@ app.directive('resultTable', function () {
             if (val) {
                 // this will run after ng table is populated
                 // to make copy buttons
-                alert('ttt');
                 $('.copy-button').each(function () {
                     var client = new ZeroClipboard($(this));
                 });
@@ -95,6 +94,7 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
         $scope.itemsPerPage = 20;
         $scope.page = 1;
         var get = function (url) {
+            // start spinner before the heavy http get
             usSpinnerService.spin('spinner-1');
             $http.get(url).success(
                 function (data) {
@@ -105,6 +105,8 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
                         $scope.itemsPerPage = data.itemsPerPage;
                         $scope.page = data.offset;
                     }
+                    // stop spinner when success
+                    // spinner might not stop if error
                     usSpinnerService.stop('spinner-1');
                 }
             );

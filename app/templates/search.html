@@ -18,7 +18,8 @@
                         </button>
                     </div>
                     <input type="text" class="form-control" id="search-box" name="q"
-                           placeholder="Search" value="{{ query_text }}" ng-keydown="search()">
+                           placeholder="Search" value="[[searchResult.queryText]]"
+                           ng-keydown="search()">
                 </div>
             </div>
         </div>
@@ -63,38 +64,6 @@
                 </tbody>
             </table>
 
-            <ul class="pagination">
-                {% if current_page == 1 %}
-                <li class="disabled">
-                    <a href="#">&laquo;</a>
-                </li>
-                {% else %}
-                <li>
-                    <a href="/search?q={{ query_text }}&amp;p={{ current_page-1 }}&amp;t={{ query_type }}">&laquo;</a>
-                </li>
-                {% endif %}
-                {% for page in pages %}
-                {% if page == current_page or page == '..' %}
-                <li class="disabled">
-                    <a href="">{{ page }}</a>
-                </li>
-                {% else %}
-                <li>
-                    <a href="/search?q={{ query_text }}&amp;p={{ page }}&amp;t={{ query_type }}">{{ page }}</a>
-                </li>
-                {% endif %}
-                {% endfor %}
-                {% if current_page == pages[-1] %}
-                <li class="disabled">
-                    <a href="#">&raquo;</a>
-                </li>
-                {% else %}
-                <li>
-                    <a href="/search?q={{ query_text }}&amp;p=
-                                {{ current_page+1 }}&amp;t={{ query_type }}">&raquo;</a>
-                </li>
-                {% endif %}
-            </ul>
         </div>
     </div>
 
