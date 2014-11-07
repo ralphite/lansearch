@@ -65,8 +65,12 @@
             </table>
 
         </div>
+        <ul class="pages">
+            <li ng-repeat="page in pages" class="[[page.class]]"
+                ng-click="search()">[[page.text]]
+            </li>
+        </ul>
     </div>
-
 
 </div>
 {% endblock %}

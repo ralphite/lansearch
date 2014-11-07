@@ -4,6 +4,7 @@ from time import time
 from flask import jsonify, request
 
 from . import api, es
+from utils.helpers import calc_pages
 from utils.crawler import get_current_domain as gcd, get_machines_in_domain
 from config.config import Config
 
@@ -58,6 +59,7 @@ def search():
                              }
                          }
                      })
+    pages = calc_pages(offset, items_per_page, resp['hits']['total'])
 
     return jsonify({
         'queryText': query_text,
@@ -65,5 +67,6 @@ def search():
         'offset': offset,
         'itemsPerPage': items_per_page,
         'searchResult': resp,
+        'pages': pages,
         'error': ''
     })

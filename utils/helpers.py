@@ -29,6 +29,45 @@ def to_human_readable(size):
     return ('%.2f' % size) + ' GB'
 
 
+def calc_pages(page, items_per_page, total):
+    page_count = total / items_per_page + 1
+    arr = ['<<', '<']
+    if page_count < 10:
+        [arr.append(str(i)) for i in range(1, page_count + 1)]
+    elif page < 10:
+        [arr.append(str(i)) for i in range(1, 10)]
+        arr.append('..')
+    elif page > page_count - 10:
+        arr.append('..')
+        [arr.append(str(i)) for i in range(page_count-10, page_count + 1)]
+    else:
+        arr.append('..')
+        [arr.append(str(i)) for i in range(page - 5, page + 5)]
+        arr.append('..')
+    arr.append('>')
+    arr.append('>>')
+    pages = []
+    for s in arr:
+        if s==str(page) or s=='..':
+            pages.append({
+                'text': s,
+                'class': 'page disabled'
+            })
+        else:
+            pages.append({
+                'text': s,
+                'class': 'page active'
+            })
+    if page == 1:
+        pages[0]['class'] = 'page disabled'
+        pages[1]['class'] = 'page disabled'
+    if page == page_count:
+        pages[-1]['class'] = 'page disabled'
+        pages[-2]['class'] = 'page disabled'
+
+    return pages
+
+
 def gen_pagination_list(page_count, current_page):
     pages = []
     if page_count > 10:

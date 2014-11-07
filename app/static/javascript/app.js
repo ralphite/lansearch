@@ -33,6 +33,11 @@ app.directive('resultTable', function () {
                 });
             }
         });
+
+        scope.$watch('pages', function (value) {
+            console.log(this);
+            $('.pages').addClass('pagination');
+        });
     };
 });
 
@@ -93,6 +98,7 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
         $scope.searchResult = {};
         $scope.itemsPerPage = 20;
         $scope.page = 1;
+        $scope.pages = {};
         var get = function (url) {
             // start spinner before the heavy http get
             usSpinnerService.spin('spinner-1');
@@ -104,6 +110,7 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
                         $scope.searchResult = data.searchResult;
                         $scope.itemsPerPage = data.itemsPerPage;
                         $scope.page = data.offset;
+                        $scope.pages = data.pages;
                     }
                     // stop spinner when success
                     // spinner might not stop if error
@@ -119,6 +126,23 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
                 $scope.searchType = $(event.target).attr('id');
                 if (q) {
                     get('/api/v1/' + 'search?q=' + q + '&t=' + $scope.searchType);
+                }
+            }
+            else if ($(event.target).hasClass('page')) {
+                if ($(event.target).hasClass('active')) {
+                    var page = $(event.target).text();
+                    var p;
+                    alert(page);
+                    if (page === '<<') p = 1;
+                    else if (page === '<') p = $scope.page - 1;
+                    else if (page === '>') p = $scope.page + 1;
+                    else if (page === '>>')
+                        p = Number(($scope.searchResult['hit']['total']
+                            / $scope.itemsPerPage).toFixed()) + 1;
+                    else {
+                        p = Number(page);
+                    }
+                    get('/api/v1/' + 'search?q=' + q + '&t=' + $scope.searchType + '&p=' + p.toString());
                 }
             }
             else {
