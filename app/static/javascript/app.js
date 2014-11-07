@@ -1,14 +1,8 @@
 $(document).ready(function () {
-    $('.search-box').focus(function (event) {
-        this.selectionStart = this.selectionEnd = this.value.length;
-    }).focus();
+    $('.search-box').focus();
 
     var t = getUrlParameter('t') || 'match';
     $('#' + t).removeClass('btn-default').addClass('btn-info').addClass('selected');
-
-    $('.copy-button').each(function () {
-        var client = new ZeroClipboard($(this));
-    });
 });
 
 function getUrlParameter(sParam) {
@@ -25,6 +19,22 @@ function getUrlParameter(sParam) {
 var app = angular.module("app", ['angularSpinner'], function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
+});
+
+app.directive('resultTable', function () {
+    return function (scope, element, attrs) {
+        scope.$watch('searchResult', function (value) {
+            var val = value || null;
+            if (val) {
+                // this will run after ng table is populated
+                // to make copy buttons
+                alert('ttt');
+                $('.copy-button').each(function () {
+                    var client = new ZeroClipboard($(this));
+                });
+            }
+        });
+    };
 });
 
 app.controller("getDomainCtrl", function ($scope, $http) {
@@ -58,7 +68,8 @@ app.controller("getDomainCtrl", function ($scope, $http) {
 app.controller("indexSearchCtrl", function ($scope) {
     $scope.searchType = 'match';
     $scope.indexSearch = function () {
-        var q = $.trim($('#search-box').val());
+        var searchBox = $('#search-box');
+        var q = $.trim(searchBox.val());
         if ($(event.target).hasClass('btn')) {
             $('.search-type').removeClass('btn-info').addClass('btn-default');
             $(event.target).addClass('btn-info');
@@ -66,7 +77,7 @@ app.controller("indexSearchCtrl", function ($scope) {
             if (q) {
                 window.location.href = 'search?q=' + q + '&t=' + $scope.searchType;
             } else {
-                $('#search-box').val('');
+                searchBox.val('');
             }
         }
         else {
