@@ -45,7 +45,7 @@ def get_machine_list():
 
 @api.route('/search')
 def search():
-    query_text = request.args.get('q', '', type=str)
+    query_text = request.args.get('q', '', type=unicode)
     offset = request.args.get('p', 1, type=int)
     query_type = request.args.get('t', 'match', type=str)
     items_per_page = Config.ITEMS_PER_PAGE
