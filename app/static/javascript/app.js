@@ -108,12 +108,18 @@ app.controller("indexSearchCtrl", function ($scope) {
 
 app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
     function ($scope, $http, usSpinnerService) {
-        var searchBox = $('#search-box');
-        $scope.searchType = getUrlParameter('t') || 'match';
-        $scope.searchResult = {};
+        $scope.searchResult = {
+            queryText: '',
+            took: 0,
+            hits: {
+                total: 0
+            }
+        };
         $scope.itemsPerPage = 20;
         $scope.page = 1;
         $scope.pages = {};
+        $scope.searchType = getUrlParameter('t') || 'match';
+        var searchBox = $('#search-box');
         var get = function (url) {
             // start spinner before the heavy http get
             usSpinnerService.spin('spinner-1');
@@ -151,8 +157,8 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
                     else if (page === '<') p = $scope.page - 1;
                     else if (page === '>') p = $scope.page + 1;
                     else if (page === '>>') {
-                        p = Number(($scope.searchResult['hits']['total']
-                            / $scope.itemsPerPage).toFixed());
+                        p = Math.ceil(Number(($scope.searchResult['hits']['total']
+                            / $scope.itemsPerPage)));
                     }
                     else {
                         p = Number(page);
@@ -174,7 +180,7 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
             var q = getUrlParameter('q') || '';
             var p = getUrlParameter('p') || 1;
             var url = '/api/v1/' + 'search?q=' + q + '&t=' + t + '&p=' + p.toString();
-            searchBox.val(q);
             get(url);
+            searchBox.val(q);
         });
     }]);
