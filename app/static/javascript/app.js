@@ -33,10 +33,6 @@ app.directive('resultTable', function () {
                 });
             }
         });
-
-        scope.$watch('pages', function (value) {
-            console.log(scope.pages);
-        });
     };
 });
 
@@ -134,9 +130,10 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
                     if (page === '<<') p = 1;
                     else if (page === '<') p = $scope.page - 1;
                     else if (page === '>') p = $scope.page + 1;
-                    else if (page === '>>')
-                        p = Number(($scope.searchResult['hit']['total']
-                            / $scope.itemsPerPage).toFixed()) + 1;
+                    else if (page === '>>') {
+                        p = Number(($scope.searchResult['hits']['total']
+                            / $scope.itemsPerPage).toFixed());
+                    }
                     else {
                         p = Number(page);
                     }
