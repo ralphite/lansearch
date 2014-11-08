@@ -108,6 +108,7 @@ app.controller("indexSearchCtrl", function ($scope) {
 
 app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
     function ($scope, $http, usSpinnerService) {
+        var searchBox = $('#search-box');
         $scope.searchType = getUrlParameter('t') || 'match';
         $scope.searchResult = {};
         $scope.itemsPerPage = 20;
@@ -166,4 +167,14 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
                 }
             }
         };
+
+        // run when search page is loaded
+        angular.element(document).ready(function () {
+            var t = getUrlParameter('t') || 'match';
+            var q = getUrlParameter('q') || '';
+            var p = getUrlParameter('p') || 1;
+            var url = '/api/v1/' + 'search?q=' + q + '&t=' + t + '&p=' + p.toString();
+            searchBox.val(q);
+            get(url);
+        });
     }]);
