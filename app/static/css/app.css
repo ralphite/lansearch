@@ -15,7 +15,8 @@
     text-shadow: 4px 3px 0px rgba(0, 0, 0, 0.15);
 }
 
-.name a {
+a:hover, a:visited, a:link, a:active
+{
     text-decoration: none;
 }
 
@@ -47,8 +48,8 @@
 
 .path-col {
     white-space: nowrap;
-    width: 300px;
-    max-width: 300px;
+    width: 370px;
+    max-width: 370px;
     overflow: hidden;
     text-overflow: ellipsis
 }
