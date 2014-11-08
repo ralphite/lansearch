@@ -48,7 +48,7 @@
                     <td class="machine-col">[[ result._source.machine ]]</td>
                     <td class="path-col">[[ result._source.path ]]</td>
                     <td class="name-col">[[ result._source.name ]]</td>
-                    <td>[[ result._source.size ]]</td>
+                    <td>[[ result._source.size | sizeFilter]]</td>
                     <td>[[ result._source.mtime ]]</td>
                     <td>
                         <button type="button" data-clipboard-text="[[ result._source.full ]]"
