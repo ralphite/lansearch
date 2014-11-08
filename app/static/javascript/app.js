@@ -16,7 +16,26 @@ function getUrlParameter(sParam) {
     }
 }
 
-var app = angular.module("app", ['angularSpinner'], function ($interpolateProvider) {
+// make the size originally in bytes to human readable
+angular.module('filters', []).filter('sizeFilter', function () {
+    return function (input) {
+        if (input < 1024)
+            return input.toString() + ' Bytes';
+        input /= 1024;
+        if (input < 1024)
+            return input.toPrecision(4).toString() + ' KB';
+        input /= 1024;
+        if (input < 1024)
+            return input.toPrecision(4).toString() + ' MB';
+        input /= 1024;
+        if (input < 1024)
+            return input.toPrecision(4).toString() + ' GB';
+        input /= 1024;
+        return input.toPrecision(4).toString() + ' TB';
+    };
+});
+
+var app = angular.module("app", ['angularSpinner', 'filters'], function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
@@ -142,7 +161,6 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
                 }
             }
             else {
-                console.log(event);
                 if (event.keyCode == 13) {
                     if (q) get('/api/v1/' + 'search?q=' + q + '&t=' + $scope.searchType);
                 }
