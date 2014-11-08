@@ -18,43 +18,25 @@
         <div class="form-group">
             <button type="submit" class="btn btn-primary" ng-click="getMachineList()">Get Machine List</button>
         </div>
-        <div class="form-group">
-            <input type="text" class="form-control" id="machineFilter"
-                   placeholder="regexp" ng-model="machineFilter">
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox"> Reverse
-            </label>
-        </div>
-        <button type="submit" class="btn btn-default">Filter</button>
     </form>
     <p></p>
 
-    <div class="scrollContainer">
-        <div class="innerScroll">
-            <table class="table table-striped">
-                <tr>
-                    <th>
-                        <button type="submit" class="btn btn-xs btn-default">Select All</button>
-                    </th>
-                    <th>Machine Name</th>
-                    <th>Discovered Time</th>
-                    <th></th>
-                </tr>
-                <tr ng-repeat="machine in machineList">
-                    <td>
-                        <input type="checkbox">
-                    </td>
-                    <td>[[machine.name]]</td>
-                    <td>[[machine.discovered_time]]</td>
-                    <td>
-                        <button type="submit" class="btn btn-xs btn-primary">Get Shared Folders</button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
+    <table class="machine-list table table-striped">
+        <thead>
+        <tr>
+            <th>Machine Name</th>
+            <th>Discovered Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="machine in machineList">
+
+            <td>[[machine.name]]</td>
+            <td>[[machine.discovered_time]]</td>
+        </tr>
+        </tbody>
+    </table>
+
     <hr>
 
     <form class="form-inline" role="form">

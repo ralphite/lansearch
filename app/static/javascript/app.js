@@ -3,6 +3,8 @@ $(document).ready(function () {
 
     var t = getUrlParameter('t') || 'match';
     $('#' + t).removeClass('btn-default').addClass('btn-info').addClass('selected');
+
+    $('.machine-list').DataTable();
 });
 
 function getUrlParameter(sParam) {
@@ -52,33 +54,35 @@ app.directive('resultTable', function () {
                 });
             }
         });
+        scope.$watch('machineList', function (value) {
+            $('.machine-list').DataTable();
+        });
     };
 });
 
-app.controller("getDomainCtrl", function ($scope, $http) {
+app.controller("getDomainCtrl", function ($scope, $http, usSpinnerService) {
     $scope.domain = "domain";
-    $scope.machineList = [
-        {
-            "name": "chn-yawen",
-            "discovered_time": 'now'
-        }
-    ];
+    $scope.machineList = [];
     $scope.getCurrentDomain = function () {
+        usSpinnerService.spin('spinner-1');
         $http.get('api/v1/get-current-domain').success(function (data) {
             if (data.error) {
                 alert(data.error);
             } else {
                 $scope.domain = data.domain;
             }
+            usSpinnerService.stop('spinner-1');
         });
     };
     $scope.getMachineList = function () {
+        usSpinnerService.spin('spinner-1');
         $http.get('api/v1/get-machine-list').success(function (data) {
             if (data.error) {
                 alert(data.error);
             } else {
                 $scope.machineList = data.machineList;
             }
+            usSpinnerService.stop('spinner-1');
         });
     };
 });
