@@ -11,19 +11,20 @@
     <link href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="/static/css/app.css" rel="stylesheet">
 </head>
-<body class='container'>
-<header id="header">
-    <h1 class="name">
-        <a href="/">LAN Search</a>
-    </h1>
-</header>
+<body>
+<div class="wrapper container">
+    <header id="header">
+        <h1 class="name">
+            <a href="/">LAN Search</a>
+        </h1>
+    </header>
+    {% block content %}
+    {% endblock %}
+    <span us-spinner spinner-key="spinner-1"></span>
+    <div class="push"></div>
+</div>
 
-{% block content %}
-{% endblock %}
-
-<span us-spinner spinner-key="spinner-1"></span>
-
-<footer>
+<div class="footer">
     <div class="col-lg-12 col-sm-12 col-12 row" id="copy">
         <span class="col-md-7"></span>
         <span class="col-md-1">
@@ -31,7 +32,7 @@
         </span>
         <span class="col-md-2">© 2014 Ralph Wen</span>
     </div>
-</footer>
+</div>
 
 <script src="/static/bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
 <script src="/static/bower_components/angular/angular.js" type="text/javascript"></script>
