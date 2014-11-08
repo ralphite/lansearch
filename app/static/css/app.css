@@ -36,3 +36,24 @@
     right: 0px;
     height: 100%;
 }
+
+.machine-col {
+    white-space: nowrap;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.path-col {
+    white-space: nowrap;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.name-col {
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis
+}

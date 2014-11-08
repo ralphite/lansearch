@@ -45,9 +45,9 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="result in searchResult.hits.hits" title="[[result._source.full]]">
-                    <td>[[ result._source.machine ]]</td>
-                    <td>[[ result._source.path ]]</td>
-                    <td>[[ result._source.name ]]</td>
+                    <td class="machine-col">[[ result._source.machine ]]</td>
+                    <td class="path-col">[[ result._source.path ]]</td>
+                    <td class="name-col">[[ result._source.name ]]</td>
                     <td>[[ result._source.size ]]</td>
                     <td>[[ result._source.mtime ]]</td>
                     <td>
@@ -65,7 +65,7 @@
             </table>
 
         </div>
-        <ul class="pages">
+        <ul class="pages pagination">
             <li ng-repeat="page in pages" class="[[page.class]]"
                 ng-click="search()">[[page.text]]
             </li>
