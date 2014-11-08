@@ -39,6 +39,7 @@
 
 .machine-col {
     white-space: nowrap;
+    width: 100px;
     max-width: 100px;
     overflow: hidden;
     text-overflow: ellipsis
@@ -46,6 +47,7 @@
 
 .path-col {
     white-space: nowrap;
+    width: 300px;
     max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis
@@ -53,6 +55,7 @@
 
 .name-col {
     white-space: nowrap;
+    width: 200px;
     max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis

@@ -65,12 +65,11 @@
             </table>
 
         </div>
-        <ul class="pages pagination">
-            <li ng-repeat="page in pages" class="[[page.class]]"
-                ng-click="search()">[[page.text]]
+        <ul class="pagination">
+            <li ng-repeat="page in pages" class="[[page.class]]">
+                <a class="[[page.class]]" ng-click="search()">[[page.text]]</a>
             </li>
         </ul>
     </div>
-
 </div>
 {% endblock %}

@@ -35,8 +35,7 @@ app.directive('resultTable', function () {
         });
 
         scope.$watch('pages', function (value) {
-            console.log(this);
-            $('.pages').addClass('pagination');
+            console.log(scope.pages);
         });
     };
 });
@@ -129,10 +128,9 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
                 }
             }
             else if ($(event.target).hasClass('page')) {
-                if ($(event.target).hasClass('active')) {
+                if ($(event.target).hasClass('click')) {
                     var page = $(event.target).text();
                     var p;
-                    alert(page);
                     if (page === '<<') p = 1;
                     else if (page === '<') p = $scope.page - 1;
                     else if (page === '>') p = $scope.page + 1;
@@ -142,7 +140,8 @@ app.controller("searchCtrl", ['$scope', '$http', 'usSpinnerService',
                     else {
                         p = Number(page);
                     }
-                    get('/api/v1/' + 'search?q=' + q + '&t=' + $scope.searchType + '&p=' + p.toString());
+                    var url = '/api/v1/' + 'search?q=' + q + '&t=' + $scope.searchType + '&p=' + p.toString();
+                    get(url);
                 }
             }
             else {

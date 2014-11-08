@@ -39,7 +39,7 @@ def calc_pages(page, items_per_page, total):
         arr.append('..')
     elif page > page_count - 10:
         arr.append('..')
-        [arr.append(str(i)) for i in range(page_count-10, page_count + 1)]
+        [arr.append(str(i)) for i in range(page_count - 10, page_count + 1)]
     else:
         arr.append('..')
         [arr.append(str(i)) for i in range(page - 5, page + 5)]
@@ -48,7 +48,12 @@ def calc_pages(page, items_per_page, total):
     arr.append('>>')
     pages = []
     for s in arr:
-        if s==str(page) or s=='..':
+        if s == str(page):
+            pages.append({
+                'text': s,
+                'class': 'page active'
+            })
+        elif s == '..':
             pages.append({
                 'text': s,
                 'class': 'page disabled'
@@ -56,7 +61,7 @@ def calc_pages(page, items_per_page, total):
         else:
             pages.append({
                 'text': s,
-                'class': 'page active'
+                'class': 'page click'
             })
     if page == 1:
         pages[0]['class'] = 'page disabled'
