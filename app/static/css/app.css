@@ -48,8 +48,8 @@ a:hover, a:visited, a:link, a:active
 
 .path-col {
     white-space: nowrap;
-    width: 370px;
-    max-width: 370px;
+    width: 350px;
+    max-width: 350px;
     overflow: hidden;
     text-overflow: ellipsis
 }
@@ -60,6 +60,11 @@ a:hover, a:visited, a:link, a:active
     max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis
+}
+
+.size-col {
+    width: 90px;
+    max-width: 90px;
 }
 
 .ng-scope {
@@ -86,4 +91,8 @@ body {
     width: 100%;
     padding-top: 20px;
     background-color: #f5f5f5;
+}
+
+.bull {
+    color: #ccc
 }

@@ -15,3 +15,7 @@ def index():
 @main.route('/search', methods=['GET', 'POST'])
 def search():
     return render_template('search.html')
+
+@main.route('/about')
+def about():
+    return render_template('about.html')
