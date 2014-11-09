@@ -1,6 +1,7 @@
 # LAN Search
-
 > Index and search files shared in the Local Area Network
+
+----
 
 ## Features
 
