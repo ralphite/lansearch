@@ -56,8 +56,8 @@
 <a id="user-content-features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <ol>
-<li>Keyword matching</li>
-<li>Wildcard</li>
+<li>Keyword searching</li>
+<li>Wildcard matching</li>
 <li>Regular Expressions!</li>
 <li>Easy copy and paste</li>
 </ol>
@@ -65,14 +65,81 @@
 <h2>
 <a id="user-content-deployment" class="anchor" href="#deployment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deployment</h2>
 
-<h3>
-<a id="user-content-command-line" class="anchor" href="#command-line" aria-hidden="true"><span class="octicon octicon-link"></span></a>Command-line</h3>
+<h4>
+<a id="user-content-get-the-repository" class="anchor" href="#get-the-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get the Repository</h4>
 
-<ol>
-<li>Download and start ElasticSearch</li>
-<li>Download and install git</li>
-<li>git clone ...</li>
-</ol>
+<p>Download and install <a href="http://git-scm.com/">git</a>. Open <code>git bash</code> and execute the
+following command to get the repository.</p>
+
+<blockquote>
+<p><code>git clone https://github.com/yadongwen/lansearch.git</code></p>
+</blockquote>
+
+<h4>
+<a id="user-content-elasticsearch" class="anchor" href="#elasticsearch" aria-hidden="true"><span class="octicon octicon-link"></span></a>ElasticSearch</h4>
+
+<p>Download <a href="http://www.elasticsearch.org/">ElasticSearch</a> and start an instance. To
+start an instance, decompress the file and execute <code>bin/elasticsearch.bat</code></p>
+
+<h4>
+<a id="user-content-python-environment" class="anchor" href="#python-environment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Python Environment</h4>
+
+<p>Download and install <a href="https://www.python.org/downloads/">python2.7</a>,
+<a href="https://pip.pypa.io/en/latest/installing.html">pip</a> and 
+<a href="http://docs.python-guide.org/en/latest/dev/virtualenvs/">virtualenv</a>.</p>
+
+<p>In <code>git bash</code> go to the repository folder and create a Python virtual environment
+with <code>virtualenv venv</code>, then activate it with <code>. venv/source/activate</code>. </p>
+
+<p>In venv execute <code>pip install -r requirements.txt</code> to download and install the dependencies.</p>
+
+<p><code>pywin32</code> is also required to run this app which cannot be installed automatically 
+with <code>pip</code>. Please manually <a href="http://sourceforge.net/projects/pywin32/files/pywin32/">download</a> 
+and install it.</p>
+
+<h4>
+<a id="user-content-crawl-data" class="anchor" href="#crawl-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Crawl Data</h4>
+
+<p><code>lansearch.py</code> provides a few commands for data crawling. Please refer to the 
+command reference below.</p>
+
+<pre><code>$ python lansearch.py
+usage: lansearch.py [-?]
+
+                    {create_index,shell,drop_index,retrieve_shared_folder_list,
+                    retrieve_machine_list,runserver,filter_shared_folders,test,
+                    filter_machines,recreate_tables,crawl}
+                    ...
+
+positional arguments:
+  {create_index,shell,drop_index,retrieve_shared_folder_list,
+  retrieve_machine_list,runserver,filter_shared_folders,test,
+  filter_machines,recreate_tables,crawl}
+    create_index        create file index
+    shell               Runs a Python shell inside Flask application context.
+    drop_index          drop file index
+    retrieve_shared_folder_list
+                        retrieve list of shared folders and save to DB.
+    retrieve_machine_list
+                        retrieve machine list in the current domain. result
+                        will be saved to machines table in data/machines.db
+    runserver           Runs the Flask development server i.e. app.run()
+    filter_shared_folders
+    test                Run unit tests
+    filter_machines
+    recreate_tables     dangerous
+    crawl               crawl list of shared files and push to ES.
+
+optional arguments:
+  -?, --help            show this help message and exit
+</code></pre>
+
+<h4>
+<a id="user-content-start-app" class="anchor" href="#start-app" aria-hidden="true"><span class="octicon octicon-link"></span></a>Start App</h4>
+
+<p>Finally you may start <strong>LAN Search</strong> with <code>python lansearch.py runserver -h 0.0.0.0</code>.</p>
+
+<p>Enjoy!</p>
 
               </div>
             </div>
